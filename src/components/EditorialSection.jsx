@@ -3,14 +3,13 @@ import { m, useScroll, useTransform } from 'framer-motion';
 import { assets } from '../config/assets.config.js';
 import { isKnown, venue } from '../config/venue.config.js';
 import { localize, useSite } from '../app/SiteContext.jsx';
-import { useMotionScale, useTheme } from '../theme/ThemeContext.jsx';
-import { ConceptTag, Eyebrow, Img, MaskReveal, Reveal } from './primitives.jsx';
+import { useMotionScale } from '../theme/ThemeContext.jsx';
+import { Eyebrow, Img, MaskReveal, Reveal } from './primitives.jsx';
 
 /** Section 2 — the venue as architecture. */
 export function EditorialSection() {
   const ref = useRef(null);
   const { t, locale } = useSite();
-  const { showDemoChrome } = useTheme();
   const scale = useMotionScale();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'start start'] });
   // The oversized heading settles into place as the section arrives.
@@ -30,13 +29,8 @@ export function EditorialSection() {
 
         <figure className="venue__figure">
           <MaskReveal className="frame">
-            <Img asset={assets.venue} sizes="(min-width: 900px) 62vw, 100vw" />
+            <Img asset={assets.venue} />
           </MaskReveal>
-          {showDemoChrome && assets.venue.placeholder && (
-            <figcaption className="venue__note">
-              <ConceptTag>Placeholder — replace with the venue’s own photography</ConceptTag>
-            </figcaption>
-          )}
         </figure>
 
         <div className="venue__copy">

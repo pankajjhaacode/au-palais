@@ -1,19 +1,15 @@
 import { m } from 'framer-motion';
-import { imageSources } from '../config/assets.config.js';
 import { useSite } from '../app/SiteContext.jsx';
 import { useMotionScale } from '../theme/ThemeContext.jsx';
 
 export const EASE = [0.22, 1, 0.36, 1];
 
-export function Img({ asset, sizes = '100vw', priority = false, maxWidth, className = '' }) {
+export function Img({ asset, priority = false, className = '' }) {
   const { locale } = useSite();
-  const { src, srcSet } = imageSources(asset, maxWidth);
   return (
     <img
       className={`img ${className}`}
-      src={src}
-      srcSet={srcSet}
-      sizes={sizes}
+      src={asset.src}
       width={asset.width}
       height={asset.height}
       alt={asset.alt[locale] ?? asset.alt.en}

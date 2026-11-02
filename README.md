@@ -40,7 +40,7 @@ Deploy `dist/` to any static host (Netlify, Vercel, Cloudflare Pages, S3). Confi
 
 ## Before going live
 
-- **Photography:** every image is an Unsplash placeholder showing wedding moments, not the venue. Replace them in `assets.config.js` and set `placeholder: false`.
+- **Photography:** images in `public/images/venue/` are cropped from the client's supplied boards (some are design visualisations, max ~1300px wide). Swap in high-resolution photography via `assets.config.js` when available.
 - **Facts:** fill `venue.config.js` from the owner's information. Experiences and details stay hidden publicly until `verified` / non-null.
 - **Enquiries:** set `VITE_ENQUIRY_ENDPOINT` (API, CRM webhook or form backend). Without it, the public form shows an error instead of silently losing leads; demo mode only simulates submission.
 - **SEO:** this is a client-rendered SPA, so crawlers that don't run JavaScript see only the static `<title>`/description in `index.html`. For local SEO, add pre-rendering (e.g. `vite-plugin-ssg`) or SSR later.

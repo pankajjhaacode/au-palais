@@ -19,7 +19,7 @@ export function FinalInvitation() {
     <section ref={ref} id="finale" className="finale on-image" aria-labelledby="finale-title">
       <div className="finale__media" aria-hidden="true">
         <m.div className="hero-media__inner" style={{ y: imageY }}>
-          <Img asset={assets.closing} sizes="100vw" />
+          <Img asset={assets.closing} />
         </m.div>
         <div className="hero__scrim finale__scrim" />
       </div>

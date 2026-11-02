@@ -51,17 +51,24 @@ export const venue = {
     openingSeason: null,
   },
 
-  // Celebration formats the venue may host. Only `verified: true` entries appear publicly.
-  experiences: {
-    ceremony: { verified: false },
-    reception: { verified: false },
-    dinner: { verified: false },
-    party: { verified: false },
-    styling: { verified: false },
+  // Spaces shown in the client's supplied imagery. Only `verified: true` entries appear publicly.
+  spaces: {
+    ceremony: { verified: true },
+    staircase: { verified: true },
+    ballroom: { verified: true },
+    mezzanine: { verified: true },
+    tables: { verified: true },
   },
 
-  // Distinctive architectural features, e.g. [{ en: 'Double-height hall', fr: 'Salle à double hauteur' }]
-  architecturalFeatures: [],
+  // Features visible in the client's supplied imagery.
+  architecturalFeatures: [
+    { en: 'Curved grand staircase', fr: 'Grand escalier courbe' },
+    { en: 'Mezzanine gallery', fr: 'Mezzanine en galerie' },
+    { en: 'Crystal chandeliers', fr: 'Lustres de cristal' },
+    { en: 'Skylights', fr: 'Puits de lumière' },
+    { en: 'Panelled and mirrored walls', fr: 'Boiseries et miroirs' },
+    { en: 'Raised stage', fr: 'Scène surélevée' },
+  ],
 };
 
 export const isKnown = (value) =>

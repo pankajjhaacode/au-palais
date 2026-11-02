@@ -73,7 +73,7 @@ function Lightbox({ index, onIndex, onClose }) {
             exit={{ opacity: 0, x: -60 * direction * scale }}
             transition={{ duration: 0.6, ease: EASE }}
           >
-            <Img asset={asset} sizes="100vw" priority />
+            <Img asset={asset} priority />
             <figcaption>{asset.alt[locale] ?? asset.alt.en}</figcaption>
           </m.figure>
         </AnimatePresence>
@@ -130,7 +130,7 @@ export function VenueGallery() {
                 className="gallery__btn frame"
                 onClick={() => setOpen(i)}
               >
-                <Img asset={asset} sizes="(min-width: 900px) 40vw, 90vw" maxWidth={1440} />
+                <Img asset={asset} />
               </button>
             </Reveal>
           ))}

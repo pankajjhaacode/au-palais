@@ -56,14 +56,14 @@ function Meta() {
 }
 
 /** Full-bleed photograph with slow scroll parallax. */
-function ParallaxImage({ targetRef, sizes = '100vw', className = '' }) {
+function ParallaxImage({ targetRef, className = '' }) {
   const scale = useMotionScale();
   const { scrollYProgress } = useScroll({ target: targetRef, offset: ['start start', 'end start'] });
   const y = useTransform(scrollYProgress, [0, 1], ['0%', `${16 * scale}%`]);
   return (
     <div className={`hero-media ${className}`}>
       <m.div className="hero-media__inner" style={{ y }}>
-        <Img asset={assets.hero} priority sizes={sizes} />
+        <Img asset={assets.hero} priority />
       </m.div>
     </div>
   );
@@ -91,7 +91,7 @@ function SplitHero() {
   const { t } = useSite();
   return (
     <section ref={ref} className="hero hero--split" aria-labelledby="hero-title">
-      <ParallaxImage targetRef={ref} className="hero-split__media" sizes="(min-width: 900px) 52vw, 100vw" />
+      <ParallaxImage targetRef={ref} className="hero-split__media" />
       <p className="vertical-label" aria-hidden="true">{t.hero.vertical}</p>
       <div className="hero__frame">
         <p className="hero__caption">{t.hero.caption}</p>
@@ -106,7 +106,7 @@ function TypographyHero() {
   const { t } = useSite();
   const imageWindow = (
     <span className="hero-window" aria-hidden="true">
-      <Img asset={assets.hero} priority sizes="(min-width: 900px) 30vw, 40vw" maxWidth={1080} />
+      <Img asset={assets.hero} priority />
     </span>
   );
   return (
@@ -144,7 +144,7 @@ function ExperimentalHero() {
       <div className="hero-exp__sticky">
         <m.div className="hero-exp__media" style={animated ? { clipPath } : undefined}>
           <m.div className="hero-media__inner" style={animated ? { scale: imageScale } : undefined}>
-            <Img asset={assets.hero} priority sizes="100vw" />
+            <Img asset={assets.hero} priority />
           </m.div>
           <m.div className="hero__scrim" style={animated ? { opacity: scrim } : { opacity: 0.55 }} aria-hidden="true" />
         </m.div>
