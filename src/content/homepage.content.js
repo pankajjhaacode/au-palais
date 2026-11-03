@@ -1,24 +1,192 @@
+import { venue } from '../config/venue.config.js';
+
 /**
  * All public copy, per locale. Components never hard-code user-facing text.
  * Copy describes atmosphere and intent; factual claims come only from venue.config.js.
  * French uses typographic apostrophes and narrow non-breaking spaces (\u202F) before : ? !
  */
 const nbsp = ' ';
+const { legal, contact, identity } = venue;
+const show = (value, missing) => value || missing;
+const address = [identity.streetAddress, identity.postalCode, identity.streetAddress && identity.city].filter(Boolean).join(' ');
+const contactLine = [contact.email, contact.phone].filter(Boolean).join(' · ');
 
 export const content = {
   en: {
-    meta: {
-      title: 'The Art of Forever — Weddings in Paris',
-      description:
-        'A Paris wedding hall of crystal chandeliers, a sweeping grand staircase and a mezzanine above the dance floor.',
-      ogLocale: 'en_GB',
+    pages: {
+      home: { title: 'Crystal Gold — Wedding Venue in Paris', description: 'A Paris wedding hall of crystal chandeliers, a sweeping grand staircase and a mezzanine above the dance floor.' },
+      venue: { title: 'The Venue — Crystal Gold', description: 'Inside the hall: a curved grand staircase, a mezzanine gallery, crystal chandeliers and skylights.' },
+      spaces: { title: 'The Spaces — Crystal Gold', description: 'The ceremony hall, the grand staircase, the ballroom and the mezzanine, room by room.' },
+      day: { title: 'Your Day — Crystal Gold', description: 'One way a wedding day could unfold in the hall, from the first arrival to the last dance.' },
+      gallery: { title: 'Gallery — Crystal Gold', description: 'See the hall from every angle: the staircase, the chandeliers, the stage and the mezzanine.' },
+      contact: { title: 'Contact — Crystal Gold', description: 'Tell us about the day you imagine. Enquire about your wedding in the hall.' },
+      legal: { title: 'Legal Notice — Crystal Gold', description: 'Publisher and hosting information for the Crystal Gold website.' },
+      privacy: { title: 'Privacy Policy — Crystal Gold', description: 'What personal data the Crystal Gold website collects, why, for how long, and your rights.' },
+      faq: { title: 'FAQ — Crystal Gold', description: 'Answers to common questions about dates, guest numbers, visiting the hall and enquiring about your wedding.' },
+      terms: { title: 'Terms of Use — Crystal Gold', description: 'The terms that apply when you use the Crystal Gold website.' },
+      cookies: { title: 'Cookie Policy — Crystal Gold', description: 'This website sets no advertising or analytics cookies. See what it does load, and why.' },
+      accessibility: { title: 'Accessibility — Crystal Gold', description: 'How the Crystal Gold website supports accessibility, its current status, and how to report a problem.' },
+      notFound: { title: 'Page not found — Crystal Gold', description: 'This page could not be found.' },
+    },
+    venuePage: {
+      hero: {
+        lines: ['The', 'hall.'],
+        coda: 'Built to be seen.',
+        caption: 'Light, line, proportion',
+        cta: 'Step inside',
+        meta: ['Paris, France', 'The venue', 'Nº 02'],
+        vertical: 'Crystal Gold',
+      },
+      details: {
+        eyebrow: 'In detail',
+        title: 'What makes it.',
+        intro: 'Three things you notice before anything else.',
+        items: {
+          light: { title: 'Crystal and skylights', text: 'Tiered chandeliers hang through the centre of the room, with skylights opening the ceiling on either side.' },
+          walls: { title: 'Panelling and mirrors', text: 'Panelled walls and tall mirrors carry the light around the hall and double the candlelight at night.' },
+          floor: { title: 'An open floor', text: 'A wide, pale floor runs from the stage to the foot of the staircase, leaving the middle of the room free.' },
+        },
+      },
+    },
+    spacesPage: {
+      hero: {
+        lines: ['Five', 'scenes.'],
+        coda: 'One hall.',
+        caption: 'Stage, staircase, floor, gallery',
+        cta: 'See the spaces',
+        meta: ['Paris, France', 'The spaces', 'Nº 03'],
+        vertical: 'Crystal Gold',
+      },
+    },
+    dayPage: {
+      hero: {
+        lines: ['Your', 'day.'],
+        coda: 'First step to last dance.',
+        caption: 'One way it could unfold',
+        cta: 'Walk through it',
+        meta: ['Paris, France', 'Your day', 'Nº 04'],
+        vertical: 'Crystal Gold',
+      },
+      steps: {
+        eyebrow: 'A day in the hall',
+        title: 'Scene by scene.',
+        intro: 'One way the day could unfold here. The order, and everything else, is yours.',
+        items: {
+          arrive: { title: 'The arrival', text: 'Guests gather on the open floor, beneath the chandelier and the skylights.' },
+          vows: { title: 'The vows', text: 'All eyes turn to the raised stage, framed by mirrors and flowers.' },
+          entrance: { title: 'The entrance', text: 'The two of you come down the grand staircase, between flowers and candlelight.' },
+          dinner: { title: 'The dinner', text: 'Round tables fill the hall, with candles lit and the speeches still to come.' },
+          dance: { title: 'The first dance', text: 'The floor clears, and the mezzanine fills with people watching from above.' },
+        },
+      },
+    },
+    galleryPage: {
+      title: 'Every angle.',
+      hero: {
+        lines: ['Imagine', 'it.'],
+        coda: 'The hall in images.',
+        caption: 'Select any image to view it full screen',
+        cta: 'Open the gallery',
+        meta: ['Paris, France', 'Gallery', 'Nº 05'],
+        vertical: 'Crystal Gold',
+      },
+    },
+    contactPage: {
+      hero: {
+        lines: ['Tell', 'us.'],
+        coda: 'The day you imagine.',
+        caption: 'We reply personally',
+        cta: 'Begin your enquiry',
+        meta: ['Paris, France', 'Contact', 'Nº 06'],
+        vertical: 'Crystal Gold',
+      },
+      faqTitle: 'Before you write',
+      faqMore: 'All questions',
+    },
+    legalPage: {
+      heading: 'Legal notice',
+      sections: [
+        {
+          h: 'Publisher',
+          p: [
+            `Company: ${show(legal.companyName, 'To be completed')}`,
+            `Legal form: ${show(legal.legalForm, 'To be completed')}`,
+            `SIRET: ${show(legal.siret, 'To be completed')}`,
+            `Registered address: ${show(address, 'To be completed')}`,
+            `Publication director: ${show(legal.publicationDirector, 'To be completed')}`,
+            `Contact: ${show(contactLine, 'To be completed')}`,
+          ],
+        },
+        { h: 'Hosting', p: ['Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, United States.'] },
+        { h: 'Intellectual property', p: ['The text and images on this site may not be reproduced without permission. Some images are design visualisations of the venue.'] },
+      ],
+    },
+    privacyPage: {
+      heading: 'Privacy policy',
+      sections: [
+        { h: 'What we collect', p: ['Only what you enter in the enquiry form: your names, email, optional telephone number, date or timeframe, estimated guests, type of celebration and your message.'] },
+        { h: 'Why', p: ['To reply to your enquiry. We process this data with your consent, given when you tick the box on the form. You can withdraw it at any time.'] },
+        { h: 'How long', p: ['We keep your enquiry for as long as needed to respond and, if you go ahead, to prepare your celebration. It is then deleted, unless the law requires us to keep it.'] },
+        { h: 'Who receives it', p: ['The venue team and the service providers that host this site and deliver enquiries. Your data is not sold.'] },
+        { h: 'Cookies and fonts', p: ['This site sets no advertising or analytics cookies. Its fonts load from Google Fonts, which receives your IP address when you visit.'] },
+        { h: 'Your rights', p: [`You can ask to access, correct or delete your data, or object to its use, by writing to: ${show(contactLine, 'contact address to be completed')}. You may also complain to the CNIL (cnil.fr).`] },
+      ],
+    },
+    faqPage: {
+      heading: 'Questions.',
+      intro: 'The answers couples look for first. Anything else, ask us directly.',
+      cta: 'Begin your enquiry',
+      items: [
+        { q: 'We haven’t chosen a date yet.', a: 'That’s fine. Give an approximate timeframe in the form instead.' },
+        { q: 'How many guests can the hall hold?', a: 'It depends on the layout you have in mind. Tell us your estimate and we will answer for your plans.' },
+        { q: 'Can we see the hall?', a: 'Mention it in your message and we will talk through what’s possible.' },
+        { q: 'What does a wedding here cost?', a: 'It depends on your date, guest numbers and plans, so we answer each enquiry individually.' },
+        { q: 'What kinds of celebration can we ask about?', a: 'Ceremony and reception, reception only, a wedding dinner, an intimate celebration, or something else. Choose the closest option on the form.' },
+        { q: 'Where is the venue?', a: 'In Paris. You will find a map link on the contact page.' },
+        { q: 'Are the images photographs?', a: 'Some are design visualisations of the venue, so the finish and styling you see may differ.' },
+        { q: 'How will you reply?', a: 'Personally, by email, to the address you give on the form.' },
+      ],
+    },
+    termsPage: {
+      heading: 'Terms of use',
+      sections: [
+        { h: 'This website', p: ['This site presents the Crystal Gold venue and lets you send an enquiry. By using it, you accept these terms.'] },
+        { h: 'Enquiries are not bookings', p: ['Sending an enquiry does not reserve a date or create a contract. A booking exists only once it has been confirmed in writing by both parties.'] },
+        { h: 'Accuracy', p: ['We take care to keep this site accurate, but its content is for general information and may change. Some images are design visualisations, and the styling shown is one possibility rather than a description of what is included.'] },
+        { h: 'Intellectual property', p: ['The text, images, logo and design of this site are protected. You may not reproduce them without prior written permission.'] },
+        { h: 'Links', p: ['This site links to third-party services such as Google Maps. We do not control them and are not responsible for their content.'] },
+        { h: 'Liability', p: ['We aim to keep the site available and secure, but cannot guarantee uninterrupted access. Nothing in these terms limits rights you hold under applicable law.'] },
+        { h: 'Applicable law', p: ['These terms are governed by French law.'] },
+      ],
+    },
+    cookiesPage: {
+      heading: 'Cookie policy',
+      sections: [
+        { h: 'Cookies', p: ['This site sets no advertising or analytics cookies, and does not store information on your device to track you. That is why there is no cookie banner.'] },
+        { h: 'Fonts', p: ['The site’s fonts load from Google Fonts, which receives your IP address when you visit, as it does for any web request.'] },
+        { h: 'Maps', p: ['The map link opens Google Maps only if you click it. Google’s own policies then apply.'] },
+        { h: 'Changes', p: ['If we add cookies that require your consent, we will ask for it first and update this page.'] },
+      ],
+    },
+    accessibilityPage: {
+      heading: 'Accessibility',
+      sections: [
+        { h: 'Our aim', p: ['We want every couple and guest to be able to use this site, whatever their abilities or equipment.'] },
+        { h: 'What we have done', p: ['The site can be used with a keyboard and has a link to skip to the content. Images have text descriptions, form errors are announced and explained, and animations stop if your device is set to reduce motion.'] },
+        { h: 'Current status', p: ['This site has not been formally audited against the RGAA or WCAG standards, so we make no claim of conformity.'] },
+        { h: 'Report a problem', p: [`If something stops you using the site, tell us at: ${show(contactLine, 'the enquiry form on our contact page')}.`] },
+      ],
+    },
+    notFoundPage: {
+      heading: 'Page not found.',
+      body: 'This page doesn’t exist, or it has moved.',
+      cta: 'Back to the home page',
     },
     a11y: {
       skip: 'Skip to content',
       menu: 'Menu',
       close: 'Close',
       language: 'Language',
-      openStudio: 'Customize experience',
       previous: 'Previous image',
       next: 'Next image',
       imageOf: (i, n) => `Image ${i} of ${n}`,
@@ -26,10 +194,10 @@ export const content = {
     },
     nav: {
       links: [
-        { href: '#venue', label: 'The Venue' },
-        { href: '#spaces', label: 'The Spaces' },
-        { href: '#gallery', label: 'Gallery' },
-        { href: '#approach', label: 'Details' },
+        { page: 'venue', label: 'The Venue' },
+        { page: 'spaces', label: 'The Spaces' },
+        { page: 'day', label: 'Your Day' },
+        { page: 'gallery', label: 'Gallery' },
       ],
       cta: 'Plan Your Wedding',
     },
@@ -39,7 +207,7 @@ export const content = {
       caption: 'Staircase, mezzanine, chandeliers',
       cta: 'Discover the Venue',
       meta: ['Paris, France', 'Wedding venue', 'Nº 01'],
-      vertical: 'The Art of Forever',
+      vertical: 'Crystal Gold',
     },
     venue: {
       eyebrow: 'The venue',
@@ -47,10 +215,12 @@ export const content = {
       lead: 'One sweeping staircase. A mezzanine that wraps the hall. Tiers of crystal suspended beneath the skylights.',
       body: 'The hall is built for the moments everyone remembers: an entrance down the staircase, vows before the stage, a first dance watched from the gallery above. Daylight pours through the skylights by afternoon; by night, the room belongs to crystal and candlelight.',
       featuresTitle: 'Distinctive features',
+      more: 'Explore the venue',
     },
     spaces: {
       eyebrow: 'The spaces',
       title: 'Room by room.',
+      more: 'See all the spaces',
       intro: 'One hall, composed like a stage set — every corner of it made to be seen.',
       items: {
         ceremony: { title: 'The ceremony hall', text: 'A raised stage framed by mirrored panels, beneath tiers of crystal. Vows here are seen by every guest.' },
@@ -64,13 +234,13 @@ export const content = {
       eyebrow: 'Gallery',
       title: 'Imagine it.',
       hint: 'Select an image to view it full screen',
+      more: 'View the full gallery',
     },
     details: {
       eyebrow: 'Details',
       title: 'Details that matter.',
       intro: 'Capacity, layouts and availability depend on your date and your plans. Ask, and we will answer personally.',
       empty: 'Send us your date and guest count for capacities and availability.',
-      toConfirm: 'To be confirmed with the venue',
       labels: {
         capacitySeated: 'Seated guests',
         capacityStanding: 'Standing reception',
@@ -112,7 +282,7 @@ export const content = {
           other: 'Something else',
         },
         message: 'Tell us more',
-        consent: 'I agree that my details will be used to respond to this enquiry, as described in the privacy notice.',
+        consent: 'I agree that my details will be used to respond to this enquiry.',
         privacy: 'Privacy notice',
       },
       errors: {
@@ -129,35 +299,204 @@ export const content = {
       },
       submit: 'Send enquiry',
       sending: 'Sending…',
-      demoNote: 'Demo mode: this form simulates submission. No data leaves your browser.',
       success: {
         title: 'Thank you.',
-        body: (name) => `${name ? `${name}, y` : 'Y'}our enquiry is with us. We will reply personally within two working days.`,
+        body: (name) => `${name ? `${name}, y` : 'Y'}our enquiry is with us. We will reply personally.`,
         close: 'Return to the site',
       },
     },
     footer: {
       tagline: 'A hall made for forever.',
-      conceptNote: 'Working creative concept. Name and identity to be confirmed.',
       photoCredit: 'Imagery: the venue. Some images are design visualisations.',
       rights: 'All rights reserved.',
+      explore: 'Explore',
+      legalHeading: 'Legal',
+      faq: 'FAQ',
+      contact: 'Contact',
+      legal: 'Legal notice',
+      privacy: 'Privacy policy',
+      terms: 'Terms of use',
+      cookies: 'Cookie policy',
+      accessibility: 'Accessibility',
     },
     floatingCta: 'Plan your wedding',
   },
 
   fr: {
-    meta: {
-      title: 'The Art of Forever — Mariages à Paris',
-      description:
-        'Une salle de mariage à Paris\u202F: lustres de cristal, grand escalier et mezzanine au-dessus de la piste.',
-      ogLocale: 'fr_FR',
+    pages: {
+      home: { title: 'Crystal Gold — Lieu de mariage à Paris', description: 'Une salle de mariage à Paris : lustres de cristal, grand escalier et mezzanine au-dessus de la piste.' },
+      venue: { title: 'Le Lieu — Crystal Gold', description: 'À l’intérieur de la salle : un grand escalier courbe, une mezzanine en galerie, des lustres de cristal et des puits de lumière.' },
+      spaces: { title: 'Les Espaces — Crystal Gold', description: 'La salle de cérémonie, le grand escalier, la salle de bal et la mezzanine, pièce par pièce.' },
+      day: { title: 'Votre Jour — Crystal Gold', description: 'Une façon dont votre mariage pourrait se dérouler dans la salle, de la première arrivée à la dernière danse.' },
+      gallery: { title: 'Galerie — Crystal Gold', description: 'La salle sous tous ses angles : l’escalier, les lustres, la scène et la mezzanine.' },
+      contact: { title: 'Contact — Crystal Gold', description: 'Parlez-nous du jour que vous imaginez. Renseignez-vous pour votre mariage dans la salle.' },
+      legal: { title: 'Mentions légales — Crystal Gold', description: 'Informations sur l’éditeur et l’hébergeur du site Crystal Gold.' },
+      privacy: { title: 'Politique de confidentialité — Crystal Gold', description: 'Quelles données personnelles le site Crystal Gold collecte, pourquoi, pour combien de temps, et vos droits.' },
+      faq: { title: 'FAQ — Crystal Gold', description: 'Réponses aux questions fréquentes sur les dates, le nombre d’invités, la visite de la salle et votre demande.' },
+      terms: { title: 'Conditions d’utilisation — Crystal Gold', description: 'Les conditions qui s’appliquent lorsque vous utilisez le site Crystal Gold.' },
+      cookies: { title: 'Politique de cookies — Crystal Gold', description: 'Ce site ne dépose aucun cookie publicitaire ou de mesure d’audience. Voici ce qu’il charge, et pourquoi.' },
+      accessibility: { title: 'Accessibilité — Crystal Gold', description: 'Comment le site Crystal Gold prend en charge l’accessibilité, où il en est, et comment signaler un problème.' },
+      notFound: { title: 'Page introuvable — Crystal Gold', description: 'Cette page est introuvable.' },
+    },
+    venuePage: {
+      hero: {
+        lines: ['La', 'salle.'],
+        coda: 'Faite pour être vue.',
+        caption: 'Lumière, ligne, proportions',
+        cta: 'Entrer',
+        meta: ['Paris, France', 'Le lieu', 'Nº 02'],
+        vertical: 'Crystal Gold',
+      },
+      details: {
+        eyebrow: 'En détail',
+        title: 'Ce qui la fait.',
+        intro: 'Trois choses que l’on remarque avant tout le reste.',
+        items: {
+          light: { title: 'Cristal et puits de lumière', text: 'Des lustres étagés descendent au centre de la pièce, et des puits de lumière ouvrent le plafond de chaque côté.' },
+          walls: { title: 'Boiseries et miroirs', text: 'Les boiseries et les hauts miroirs font circuler la lumière dans la salle et doublent celle des bougies le soir.' },
+          floor: { title: 'Un sol dégagé', text: 'Un large parquet clair court de la scène au pied de l’escalier et laisse le centre de la pièce libre.' },
+        },
+      },
+    },
+    spacesPage: {
+      hero: {
+        lines: ['Cinq', 'scènes.'],
+        coda: 'Une seule salle.',
+        caption: 'Scène, escalier, piste, galerie',
+        cta: 'Voir les espaces',
+        meta: ['Paris, France', 'Les espaces', 'Nº 03'],
+        vertical: 'Crystal Gold',
+      },
+    },
+    dayPage: {
+      hero: {
+        lines: ['Votre', 'jour.'],
+        coda: 'Du premier pas à la dernière danse.',
+        caption: 'Une façon de le vivre',
+        cta: 'Le parcourir',
+        meta: ['Paris, France', 'Votre jour', 'Nº 04'],
+        vertical: 'Crystal Gold',
+      },
+      steps: {
+        eyebrow: 'Un jour dans la salle',
+        title: 'Scène par scène.',
+        intro: 'Une façon dont la journée pourrait se dérouler ici. L’ordre, et tout le reste, vous appartient.',
+        items: {
+          arrive: { title: 'L’arrivée', text: 'Les invités se réunissent sur le parquet, sous le lustre et les puits de lumière.' },
+          vows: { title: 'Les vœux', text: 'Tous les regards se tournent vers la scène, encadrée de miroirs et de fleurs.' },
+          entrance: { title: 'L’entrée', text: 'Vous descendez tous les deux le grand escalier, entre les fleurs et les bougies.' },
+          dinner: { title: 'Le dîner', text: 'Les tables rondes remplissent la salle, bougies allumées, avant les discours.' },
+          dance: { title: 'La première danse', text: 'La piste se libère, et la mezzanine se remplit de ceux qui regardent d’en haut.' },
+        },
+      },
+    },
+    galleryPage: {
+      title: 'Tous les angles.',
+      hero: {
+        lines: ['Imaginez-', 'vous ici.'],
+        coda: 'La salle en images.',
+        caption: 'Sélectionnez une image pour l’afficher en plein écran',
+        cta: 'Ouvrir la galerie',
+        meta: ['Paris, France', 'Galerie', 'Nº 05'],
+        vertical: 'Crystal Gold',
+      },
+    },
+    contactPage: {
+      hero: {
+        lines: ['Parlez-', 'nous.'],
+        coda: 'Du jour que vous imaginez.',
+        caption: 'Nous répondons personnellement',
+        cta: 'Commencer votre demande',
+        meta: ['Paris, France', 'Contact', 'Nº 06'],
+        vertical: 'Crystal Gold',
+      },
+      faqTitle: 'Avant de nous écrire',
+      faqMore: 'Toutes les questions',
+    },
+    legalPage: {
+      heading: 'Mentions légales',
+      sections: [
+        {
+          h: 'Éditeur',
+          p: [
+            `Société : ${show(legal.companyName, 'À compléter')}`,
+            `Forme juridique : ${show(legal.legalForm, 'À compléter')}`,
+            `SIRET : ${show(legal.siret, 'À compléter')}`,
+            `Siège social : ${show(address, 'À compléter')}`,
+            `Directeur de la publication : ${show(legal.publicationDirector, 'À compléter')}`,
+            `Contact : ${show(contactLine, 'À compléter')}`,
+          ],
+        },
+        { h: 'Hébergement', p: ['Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis.'] },
+        { h: 'Propriété intellectuelle', p: ['Les textes et images de ce site ne peuvent être reproduits sans autorisation. Certaines images sont des visualisations du projet.'] },
+      ],
+    },
+    privacyPage: {
+      heading: 'Politique de confidentialité',
+      sections: [
+        { h: 'Ce que nous collectons', p: ['Uniquement ce que vous saisissez dans le formulaire : vos noms, e-mail, téléphone (facultatif), date ou période, nombre d’invités estimé, type de célébration et votre message.'] },
+        { h: 'Pourquoi', p: ['Pour répondre à votre demande. Ce traitement repose sur votre consentement, donné en cochant la case du formulaire. Vous pouvez le retirer à tout moment.'] },
+        { h: 'Durée', p: ['Nous conservons votre demande le temps nécessaire pour y répondre et, si vous donnez suite, pour préparer votre célébration. Elle est ensuite supprimée, sauf obligation légale de conservation.'] },
+        { h: 'Destinataires', p: ['L’équipe du lieu et les prestataires qui hébergent ce site et acheminent les demandes. Vos données ne sont pas vendues.'] },
+        { h: 'Cookies et polices', p: ['Ce site ne dépose aucun cookie publicitaire ou de mesure d’audience. Ses polices sont chargées depuis Google Fonts, qui reçoit votre adresse IP lors de votre visite.'] },
+        { h: 'Vos droits', p: [`Vous pouvez demander l’accès, la rectification ou la suppression de vos données, ou vous opposer à leur utilisation, en écrivant à : ${show(contactLine, 'adresse de contact à compléter')}. Vous pouvez aussi saisir la CNIL (cnil.fr).`] },
+      ],
+    },
+    faqPage: {
+      heading: 'Questions.',
+      intro: 'Les réponses que les couples cherchent d’abord. Pour le reste, écrivez-nous.',
+      cta: 'Commencer votre demande',
+      items: [
+        { q: 'Nous n’avons pas encore choisi de date.', a: 'Aucun souci. Indiquez plutôt une période approximative dans le formulaire.' },
+        { q: 'Combien d’invités la salle peut-elle accueillir\u202F?', a: 'Cela dépend de la configuration souhaitée. Donnez-nous votre estimation et nous vous répondrons selon vos plans.' },
+        { q: 'Pouvons-nous voir la salle\u202F?', a: 'Dites-le dans votre message et nous verrons ensemble ce qui est possible.' },
+        { q: 'Combien coûte un mariage ici\u202F?', a: 'Cela dépend de votre date, du nombre d’invités et de vos envies. Nous répondons donc à chaque demande individuellement.' },
+        { q: 'Pour quels types de célébration pouvons-nous vous écrire\u202F?', a: 'Cérémonie et réception, réception seule, dîner de mariage, célébration intime ou autre chose. Choisissez l’option la plus proche dans le formulaire.' },
+        { q: 'Où se trouve le lieu\u202F?', a: 'À Paris. Vous trouverez un lien vers la carte sur la page de contact.' },
+        { q: 'Les images sont-elles des photographies\u202F?', a: 'Certaines sont des visualisations du projet. Les finitions et la décoration peuvent donc différer.' },
+        { q: 'Comment nous répondrez-vous\u202F?', a: 'Personnellement, par e-mail, à l’adresse indiquée dans le formulaire.' },
+      ],
+    },
+    termsPage: {
+      heading: 'Conditions d’utilisation',
+      sections: [
+        { h: 'Ce site', p: ['Ce site présente le lieu Crystal Gold et vous permet d’envoyer une demande. En l’utilisant, vous acceptez ces conditions.'] },
+        { h: 'Une demande n’est pas une réservation', p: ['L’envoi d’une demande ne réserve aucune date et ne crée aucun contrat. Une réservation n’existe qu’après confirmation écrite des deux parties.'] },
+        { h: 'Exactitude', p: ['Nous veillons à l’exactitude de ce site, mais son contenu est donné à titre d’information générale et peut évoluer. Certaines images sont des visualisations du projet, et la décoration présentée est une possibilité, non une description de ce qui est inclus.'] },
+        { h: 'Propriété intellectuelle', p: ['Les textes, images, logo et conception de ce site sont protégés. Toute reproduction nécessite une autorisation écrite préalable.'] },
+        { h: 'Liens', p: ['Ce site renvoie vers des services tiers tels que Google Maps. Nous ne les contrôlons pas et ne sommes pas responsables de leur contenu.'] },
+        { h: 'Responsabilité', p: ['Nous nous efforçons de maintenir le site disponible et sûr, sans pouvoir garantir un accès ininterrompu. Rien dans ces conditions ne limite les droits que vous tenez de la loi.'] },
+        { h: 'Droit applicable', p: ['Ces conditions sont régies par le droit français.'] },
+      ],
+    },
+    cookiesPage: {
+      heading: 'Politique de cookies',
+      sections: [
+        { h: 'Cookies', p: ['Ce site ne dépose aucun cookie publicitaire ou de mesure d’audience et n’enregistre aucune information sur votre appareil pour vous suivre. C’est pourquoi il n’affiche pas de bandeau de cookies.'] },
+        { h: 'Polices', p: ['Les polices du site sont chargées depuis Google Fonts, qui reçoit votre adresse IP lors de votre visite, comme pour toute requête web.'] },
+        { h: 'Cartes', p: ['Le lien vers la carte n’ouvre Google Maps que si vous cliquez dessus. Les règles de Google s’appliquent alors.'] },
+        { h: 'Évolutions', p: ['Si nous ajoutons des cookies nécessitant votre consentement, nous vous le demanderons d’abord et mettrons cette page à jour.'] },
+      ],
+    },
+    accessibilityPage: {
+      heading: 'Accessibilité',
+      sections: [
+        { h: 'Notre objectif', p: ['Nous voulons que chaque couple et chaque invité puisse utiliser ce site, quels que soient ses capacités ou son équipement.'] },
+        { h: 'Ce que nous avons fait', p: ['Le site s’utilise au clavier et propose un lien pour accéder directement au contenu. Les images ont une description textuelle, les erreurs de formulaire sont annoncées et expliquées, et les animations s’arrêtent si votre appareil est réglé pour réduire les mouvements.'] },
+        { h: 'État actuel', p: ['Ce site n’a pas fait l’objet d’un audit formel selon le RGAA ou les WCAG\u202F: nous ne revendiquons donc aucune conformité.'] },
+        { h: 'Signaler un problème', p: [`Si quelque chose vous empêche d’utiliser le site, dites-le-nous\u202F: ${show(contactLine, 'via le formulaire de notre page de contact')}.`] },
+      ],
+    },
+    notFoundPage: {
+      heading: 'Page introuvable.',
+      body: 'Cette page n’existe pas, ou elle a été déplacée.',
+      cta: 'Retour à l’accueil',
     },
     a11y: {
       skip: 'Aller au contenu',
       menu: 'Menu',
       close: 'Fermer',
       language: 'Langue',
-      openStudio: 'Personnaliser l’expérience',
       previous: 'Image précédente',
       next: 'Image suivante',
       imageOf: (i, n) => `Image ${i} sur ${n}`,
@@ -165,10 +504,10 @@ export const content = {
     },
     nav: {
       links: [
-        { href: '#venue', label: 'Le Lieu' },
-        { href: '#spaces', label: 'Les Espaces' },
-        { href: '#gallery', label: 'Galerie' },
-        { href: '#approach', label: 'Infos' },
+        { page: 'venue', label: 'Le Lieu' },
+        { page: 'spaces', label: 'Les Espaces' },
+        { page: 'day', label: 'Votre Jour' },
+        { page: 'gallery', label: 'Galerie' },
       ],
       cta: 'Préparer votre mariage',
     },
@@ -178,7 +517,7 @@ export const content = {
       caption: 'Escalier, mezzanine, lustres',
       cta: 'Découvrir le lieu',
       meta: ['Paris, France', 'Lieu de mariage', 'Nº 01'],
-      vertical: 'The Art of Forever',
+      vertical: 'Crystal Gold',
     },
     venue: {
       eyebrow: 'Le lieu',
@@ -186,10 +525,12 @@ export const content = {
       lead: 'Un grand escalier tout en courbe. Une mezzanine qui embrasse la salle. Des cascades de cristal sous les puits de lumière.',
       body: 'La salle est pensée pour les moments dont chacun se souvient\u202F: une entrée par l’escalier, des vœux devant la scène, une première danse vue depuis la galerie. L’après-midi, la lumière du jour tombe des verrières\u202F; le soir, la salle appartient au cristal et aux bougies.',
       featuresTitle: 'Signes distinctifs',
+      more: 'Explorer le lieu',
     },
     spaces: {
       eyebrow: 'Les espaces',
       title: 'Pièce par pièce.',
+      more: 'Voir tous les espaces',
       intro: 'Une salle composée comme un décor de scène — chaque recoin fait pour être vu.',
       items: {
         ceremony: { title: 'La salle de cérémonie', text: 'Une scène surélevée entre des panneaux miroirs, sous des lustres de cristal. Ici, chaque invité voit les vœux.' },
@@ -203,13 +544,13 @@ export const content = {
       eyebrow: 'Galerie',
       title: 'Imaginez.',
       hint: 'Sélectionnez une image pour l’afficher en plein écran',
+      more: 'Voir toute la galerie',
     },
     details: {
       eyebrow: 'Infos pratiques',
       title: 'Les détails qui comptent.',
       intro: 'Capacité, configurations et disponibilités dépendent de votre date et de vos envies. Demandez-nous, nous répondons personnellement.',
       empty: 'Envoyez-nous votre date et le nombre d’invités pour connaître capacités et disponibilités.',
-      toConfirm: 'À confirmer avec le lieu',
       labels: {
         capacitySeated: 'Invités assis',
         capacityStanding: 'Cocktail debout',
@@ -251,7 +592,7 @@ export const content = {
           other: 'Autre chose',
         },
         message: 'Dites-nous en plus',
-        consent: 'J’accepte que mes données soient utilisées pour répondre à cette demande, conformément à la politique de confidentialité.',
+        consent: 'J’accepte que mes données soient utilisées pour répondre à cette demande.',
         privacy: 'Politique de confidentialité',
       },
       errors: {
@@ -268,18 +609,25 @@ export const content = {
       },
       submit: 'Envoyer la demande',
       sending: 'Envoi…',
-      demoNote: 'Mode démo\u202F: ce formulaire simule l’envoi. Aucune donnée ne quitte votre navigateur.',
       success: {
         title: 'Merci.',
-        body: (name) => `${name ? `${name}, v` : 'V'}otre demande nous est bien parvenue. Nous vous répondrons personnellement sous deux jours ouvrés.`,
+        body: (name) => `${name ? `${name}, v` : 'V'}otre demande nous est bien parvenue. Nous vous répondrons personnellement.`,
         close: 'Revenir au site',
       },
     },
     footer: {
       tagline: 'Une salle pour toujours.',
-      conceptNote: 'Concept créatif de travail. Nom et identité à confirmer.',
       photoCredit: 'Visuels\u202F: le lieu. Certaines images sont des visualisations du projet.',
       rights: 'Tous droits réservés.',
+      explore: 'Explorer',
+      legalHeading: 'Légal',
+      faq: 'FAQ',
+      contact: 'Contact',
+      legal: 'Mentions légales',
+      privacy: 'Politique de confidentialité',
+      terms: 'Conditions d’utilisation',
+      cookies: 'Politique de cookies',
+      accessibility: 'Accessibilité',
     },
     floatingCta: 'Préparer votre mariage',
   },

@@ -1,7 +1,6 @@
 import { ArrowUpRight } from 'lucide-react';
 import { isKnown, venue } from '../config/venue.config.js';
 import { localize, useSite } from '../app/SiteContext.jsx';
-import { useTheme } from '../theme/ThemeContext.jsx';
 import { Eyebrow, Reveal } from './primitives.jsx';
 
 function formatValue(value, locale) {
@@ -11,16 +10,15 @@ function formatValue(value, locale) {
   return v;
 }
 
-/** Section 5 — verified practical facts. Unknown facts are never invented. */
+/** Verified practical facts. Unknown facts are never invented. */
 export function DetailsSection() {
   const { t, locale } = useSite();
-  const { showDemoChrome } = useTheme();
   const { facts, contact, site } = venue;
 
-  // Public: only confirmed facts. Demo: unconfirmed facts are listed as a checklist for the owner.
+  // Only confirmed facts are shown.
   const rows = Object.keys(t.details.labels)
-    .filter((key) => isKnown(facts[key]) || showDemoChrome)
-    .map((key) => ({ key, known: isKnown(facts[key]), value: formatValue(facts[key], locale) }));
+    .filter((key) => isKnown(facts[key]))
+    .map((key) => ({ key, value: formatValue(facts[key], locale) }));
 
   const contactRows = [
     contact.email && { label: contact.email, href: `mailto:${contact.email}` },
@@ -31,7 +29,7 @@ export function DetailsSection() {
     <section id="approach" className="section details inverse" aria-labelledby="details-title">
       <div className="container details__grid">
         <header className="details__head">
-          <Eyebrow index="04">{t.details.eyebrow}</Eyebrow>
+          <Eyebrow>{t.details.eyebrow}</Eyebrow>
           <Reveal as="h2" id="details-title" className="display details__title">
             {t.details.title}
           </Reveal>
@@ -44,9 +42,9 @@ export function DetailsSection() {
           {rows.length > 0 ? (
             <dl className="facts">
               {rows.map((row, i) => (
-                <Reveal key={row.key} className={`fact${row.known ? '' : ' fact--pending'}`} delay={(i % 2) * 0.06}>
+                <Reveal key={row.key} className="fact" delay={(i % 2) * 0.06}>
                   <dt className="micro">{t.details.labels[row.key]}</dt>
-                  <dd>{row.known ? row.value : t.details.toConfirm}</dd>
+                  <dd>{row.value}</dd>
                 </Reveal>
               ))}
             </dl>

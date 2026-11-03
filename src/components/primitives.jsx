@@ -1,8 +1,55 @@
 import { m } from 'framer-motion';
+import { venue } from '../config/venue.config.js';
+import { pagePath } from '../app/routes.js';
 import { useSite } from '../app/SiteContext.jsx';
-import { useMotionScale } from '../theme/ThemeContext.jsx';
+import { useMotionScale } from '../app/motion.js';
 
 export const EASE = [0.22, 1, 0.36, 1];
+
+/** Internal link: a real anchor, so new-tab and modified clicks keep working. */
+export function Link({ to, onClick, children, ...rest }) {
+  const { locale, page, navigate } = useSite();
+  return (
+    <a
+      {...rest}
+      href={pagePath(locale, to)}
+      aria-current={page === to ? 'page' : undefined}
+      onClick={(e) => {
+        onClick?.(e);
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        navigate(to);
+      }}
+    >
+      {children}
+    </a>
+  );
+}
+
+/** The Crystal Gold mark: a faceted gem in gold tones. Decorative beside the wordmark. */
+function LogoMark({ className = '' }) {
+  return (
+    <svg className={`logo-mark ${className}`} viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <path fill="#b8964f" d="M1 12 7 5l3 7z" />
+      <path fill="#e3cb8a" d="M7 5h9l-6 7z" />
+      <path fill="#f0dfae" d="m16 5 6 7H10z" />
+      <path fill="#d4b46c" d="M16 5h9l-3 7z" />
+      <path fill="#a8843f" d="m25 5 6 7h-9z" />
+      <path fill="#9a7838" d="M1 12h9l6 17z" />
+      <path fill="#c9a75c" d="M10 12h12l-6 17z" />
+      <path fill="#7f622c" d="M22 12h9L16 29z" />
+    </svg>
+  );
+}
+
+export function Logo() {
+  return (
+    <span className="logo">
+      <LogoMark />
+      <span className="logo__word">{venue.brand.wordmark}</span>
+    </span>
+  );
+}
 
 export function Img({ asset, priority = false, className = '' }) {
   const { locale } = useSite();
@@ -22,7 +69,7 @@ export function Img({ asset, priority = false, className = '' }) {
   );
 }
 
-/** Fades content in once when it enters the viewport. Visible without JS via the <noscript> rule. */
+/** Fades content in once when it enters the viewport. */
 export function Reveal({ as = 'div', delay = 0, distance = 28, className, children, ...rest }) {
   const scale = useMotionScale();
   const Tag = m[as];
@@ -68,6 +115,3 @@ export function Eyebrow({ children, index }) {
   );
 }
 
-export function ConceptTag({ children }) {
-  return <span className="concept-tag">{children}</span>;
-}

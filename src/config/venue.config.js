@@ -2,20 +2,16 @@
  * Single source of truth for brand identity and VERIFIED venue facts.
  *
  * Rule: a value is `null` until confirmed by the venue owner.
- * Null facts are hidden on the public site and shown as "to confirm" in demo mode.
+ * Null facts are hidden on the site.
  * Never fill a field with a guess.
  */
 export const venue = {
   brand: {
-    // Temporary creative concept name, not the venue's confirmed name.
-    wordmark: 'The Art of Forever',
-    shortMark: 'AoF',
-    isConcept: true,
+    // Client-approved site name. Legal identity lives in `legal` below.
+    wordmark: 'Crystal Gold',
   },
 
   site: {
-    // Used for canonical URLs, sitemap and Open Graph. Override with SITE_URL at runtime.
-    url: 'https://www.example.com',
     defaultLocale: 'en',
     locales: ['en', 'fr'],
     // Google Maps reference supplied by the client; could not be resolved automatically.
@@ -36,7 +32,14 @@ export const venue = {
     email: null,
     phone: null,
     instagram: null,
-    privacyPolicyUrl: null,
+  },
+
+  // Required by French law on /legal. Null values render as "to be completed".
+  legal: {
+    companyName: null,
+    legalForm: null,
+    siret: null,
+    publicationDirector: null,
   },
 
   // Each fact: value is null until verified. Values may be localised { en, fr }.

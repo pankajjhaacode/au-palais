@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useSite } from '../app/SiteContext.jsx';
+import { Link } from './primitives.jsx';
 
 /** Mobile-only enquiry shortcut: visible between the hero and the final invitation. */
 export function FloatingCta() {
-  const { t, openEnquiry } = useSite();
+  const { t } = useSite();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -20,15 +21,14 @@ export function FloatingCta() {
   }, []);
 
   return (
-    <button
-      type="button"
+    <Link
+      to="contact"
       className="floating-cta btn btn--primary"
       data-visible={visible}
       aria-hidden={!visible}
       tabIndex={visible ? 0 : -1}
-      onClick={openEnquiry}
     >
       {t.floatingCta}
-    </button>
+    </Link>
   );
 }

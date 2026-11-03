@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Menu, Palette, X } from 'lucide-react';
-import { venue } from '../config/venue.config.js';
+import { Menu, X } from 'lucide-react';
 import { useSite } from '../app/SiteContext.jsx';
-import { useTheme } from '../theme/ThemeContext.jsx';
-
-const IMAGE_HEROES = new Set(['immersive', 'experimental']);
+import { Link, Logo } from './primitives.jsx';
 
 function LanguageSwitch({ className = '' }) {
   const { locale, paths, t } = useSite();
@@ -23,8 +20,7 @@ function LanguageSwitch({ className = '' }) {
 }
 
 export function Navigation() {
-  const { t, openEnquiry } = useSite();
-  const { theme, showDemoChrome, setStudioOpen } = useTheme();
+  const { t } = useSite();
   const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef(null);
 
@@ -35,37 +31,29 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Over an image hero the transparent header uses light "on image" ink.
-  const overImage = theme.layout.header === 'transparent' && !scrolled && IMAGE_HEROES.has(theme.layout.hero);
-
   const openMenu = () => menuRef.current?.showModal();
   const closeMenu = () => menuRef.current?.close();
 
   return (
-    <header className="nav" data-scrolled={scrolled} data-over-image={overImage}>
+    <header className="nav" data-scrolled={scrolled}>
       <div className="nav__inner">
-        <a className="nav__brand" href="#top">
-          {venue.brand.wordmark}
-        </a>
+        <Link className="nav__brand" to="home">
+          <Logo />
+        </Link>
 
         <nav className="nav__links" aria-label="Primary">
           {t.nav.links.map((link) => (
-            <a key={link.href} href={link.href}>
+            <Link key={link.page} to={link.page}>
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
         <div className="nav__tools">
           <LanguageSwitch className="nav__lang" />
-          {showDemoChrome && (
-            <button type="button" className="icon-btn" onClick={() => setStudioOpen(true)} aria-label={t.a11y.openStudio} title={t.a11y.openStudio}>
-              <Palette size={18} strokeWidth={1.5} aria-hidden="true" />
-            </button>
-          )}
-          <button type="button" className="btn btn--nav" onClick={openEnquiry}>
+          <Link className="btn btn--nav" to="contact">
             {t.nav.cta}
-          </button>
+          </Link>
           <button type="button" className="icon-btn nav__menu-btn" onClick={openMenu} aria-label={t.a11y.menu}>
             <Menu size={20} strokeWidth={1.5} aria-hidden="true" />
           </button>
@@ -74,30 +62,23 @@ export function Navigation() {
 
       <dialog ref={menuRef} className="menu" aria-label={t.a11y.menu}>
         <div className="menu__top">
-          <span className="nav__brand">{venue.brand.wordmark}</span>
+          <span className="nav__brand"><Logo /></span>
           <button type="button" className="icon-btn" onClick={closeMenu} aria-label={t.a11y.close}>
             <X size={22} strokeWidth={1.5} aria-hidden="true" />
           </button>
         </div>
         <nav className="menu__links" aria-label="Mobile">
           {t.nav.links.map((link, i) => (
-            <a key={link.href} href={link.href} onClick={closeMenu} style={{ '--i': i }}>
+            <Link key={link.page} to={link.page} onClick={closeMenu} style={{ '--i': i }}>
               <span className="menu__num">0{i + 1}</span>
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="menu__bottom">
-          <button
-            type="button"
-            className="btn btn--primary"
-            onClick={() => {
-              closeMenu();
-              openEnquiry();
-            }}
-          >
+          <Link className="btn btn--primary" to="contact" onClick={closeMenu}>
             {t.nav.cta}
-          </button>
+          </Link>
           <LanguageSwitch />
         </div>
       </dialog>

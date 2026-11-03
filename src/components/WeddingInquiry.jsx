@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Check, Loader2, X } from 'lucide-react';
-import { venue } from '../config/venue.config.js';
+import { Check, Loader2 } from 'lucide-react';
 import { useSite } from '../app/SiteContext.jsx';
-import { useTheme } from '../theme/ThemeContext.jsx';
+import { Link } from './primitives.jsx';
 import { emptyEnquiry, submitEnquiry, validateEnquiry } from '../services/enquiry.js';
 
 const todayISO = () => {
@@ -31,7 +30,6 @@ function Field({ id, label, hint, error, optional, children }) {
 
 function EnquiryForm({ onDone }) {
   const { t, locale } = useSite();
-  const { demo } = useTheme();
   const f = t.enquiry.fields;
   const [values, setValues] = useState(emptyEnquiry);
   const [errors, setErrors] = useState({});
@@ -61,7 +59,7 @@ function EnquiryForm({ onDone }) {
     }
     setStatus('sending');
     try {
-      await submitEnquiry(values, { demo, locale });
+      await submitEnquiry(values, { locale });
       onDone(values.names.trim().split(/\s|&/)[0]);
     } catch (error) {
       console.warn(error);
@@ -137,9 +135,7 @@ function EnquiryForm({ onDone }) {
           aria-invalid={!!errors.consent} aria-describedby={describe('consent')} required />
         <label htmlFor="consent">
           {f.consent}{' '}
-          {venue.contact.privacyPolicyUrl && (
-            <a className="link" href={venue.contact.privacyPolicyUrl} target="_blank" rel="noopener noreferrer">{f.privacy}</a>
-          )}
+          <Link className="link" to="privacy">{f.privacy}</Link>
         </label>
         {errors.consent && <p id="consent-error" className="field__error">{err('consent')}</p>}
       </div>
@@ -156,51 +152,37 @@ function EnquiryForm({ onDone }) {
             t.enquiry.submit
           )}
         </button>
-        {demo && <p className="micro enquiry__demo-note">{t.enquiry.demoNote}</p>}
       </div>
     </form>
   );
 }
 
-/** Enquiry dialog, opened from the navigation, hero/menus and the final call to action. */
+/** The enquiry form with its success state, shown inline on the contact page. */
 export function WeddingInquiry() {
-  const { t, enquiryOpen, closeEnquiry } = useSite();
-  const dialogRef = useRef(null);
+  const { t } = useSite();
+  const panelRef = useRef(null);
   const [doneName, setDoneName] = useState(null);
 
   useEffect(() => {
-    const dialog = dialogRef.current;
-    if (enquiryOpen && !dialog.open) {
-      setDoneName(null);
-      dialog.showModal();
-    }
-    if (!enquiryOpen && dialog.open) dialog.close();
-  }, [enquiryOpen]);
+    if (doneName !== null) panelRef.current?.scrollIntoView({ block: 'center' });
+  }, [doneName]);
 
   return (
-    <dialog ref={dialogRef} className="enquiry" aria-labelledby="enquiry-title" onClose={closeEnquiry}>
-      <div className="enquiry__panel">
-        <button type="button" className="icon-btn enquiry__close" onClick={closeEnquiry} aria-label={t.a11y.close}>
-          <X size={22} strokeWidth={1.5} aria-hidden="true" />
-        </button>
-
-        {doneName === null ? (
-          <>
-            <h2 id="enquiry-title" className="display enquiry__title">{t.enquiry.title}</h2>
-            <p className="body-copy enquiry__intro">{t.enquiry.intro}</p>
-            {enquiryOpen && <EnquiryForm onDone={(name) => setDoneName(name)} />}
-          </>
-        ) : (
-          <div className="enquiry__success" role="status">
-            <span className="enquiry__check" aria-hidden="true"><Check size={28} strokeWidth={1.25} /></span>
-            <h2 id="enquiry-title" className="display enquiry__title">{t.enquiry.success.title}</h2>
-            <p className="lead">{t.enquiry.success.body(doneName)}</p>
-            <button type="button" className="btn btn--primary" onClick={closeEnquiry} autoFocus>
-              {t.enquiry.success.close}
-            </button>
-          </div>
-        )}
-      </div>
-    </dialog>
+    <div ref={panelRef} className="enquiry__panel">
+      {doneName === null ? (
+        <>
+          <h2 id="enquiry-title" className="display enquiry__title">{t.enquiry.title}</h2>
+          <p className="body-copy enquiry__intro">{t.enquiry.intro}</p>
+          <EnquiryForm onDone={(name) => setDoneName(name)} />
+        </>
+      ) : (
+        <div className="enquiry__success" role="status">
+          <span className="enquiry__check" aria-hidden="true"><Check size={28} strokeWidth={1.25} /></span>
+          <h2 id="enquiry-title" className="display enquiry__title">{t.enquiry.success.title}</h2>
+          <p className="lead">{t.enquiry.success.body(doneName)}</p>
+          <Link className="btn btn--primary" to="home">{t.enquiry.success.close}</Link>
+        </div>
+      )}
+    </div>
   );
 }

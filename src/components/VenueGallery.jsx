@@ -3,14 +3,13 @@ import { AnimatePresence, m } from 'framer-motion';
 import { ArrowLeft, ArrowRight, X } from 'lucide-react';
 import { assets } from '../config/assets.config.js';
 import { useSite } from '../app/SiteContext.jsx';
-import { useMotionScale } from '../theme/ThemeContext.jsx';
-import { EASE, Eyebrow, Img, Reveal } from './primitives.jsx';
+import { useMotionScale } from '../app/motion.js';
+import { EASE, Eyebrow, Img, Link, Reveal } from './primitives.jsx';
 
-const images = assets.gallery;
 const SWIPE_THRESHOLD = 50;
 const CLOSE_MS = 280;
 
-function Lightbox({ index, onIndex, onClose }) {
+function Lightbox({ images, index, onIndex, onClose }) {
   const { t, locale } = useSite();
   const scale = useMotionScale();
   const dialogRef = useRef(null);
@@ -24,7 +23,7 @@ function Lightbox({ index, onIndex, onClose }) {
       setDirection(step);
       onIndex((index + step + images.length) % images.length);
     },
-    [index, onIndex],
+    [images.length, index, onIndex],
   );
 
   const requestClose = useCallback(() => {
@@ -99,8 +98,9 @@ function Lightbox({ index, onIndex, onClose }) {
   );
 }
 
-/** Section 4 — the emotional gallery. */
-export function VenueGallery() {
+/** The venue in images. `limit` shows a preview that links to the full gallery. */
+export function VenueGallery({ index, title, limit }) {
+  const images = limit ? assets.gallery.slice(0, limit) : assets.gallery;
   const { t } = useSite();
   const [open, setOpen] = useState(null);
   const triggerRefs = useRef([]);
@@ -114,9 +114,9 @@ export function VenueGallery() {
     <section id="gallery" className="section gallery" aria-labelledby="gallery-title">
       <div className="container">
         <header className="gallery__head">
-          <Eyebrow index="03">{t.gallery.eyebrow}</Eyebrow>
+          <Eyebrow index={index}>{t.gallery.eyebrow}</Eyebrow>
           <Reveal as="h2" id="gallery-title" className="display gallery__title">
-            {t.gallery.title}
+            {title ?? t.gallery.title}
           </Reveal>
           <p className="micro gallery__hint">{t.gallery.hint}</p>
         </header>
@@ -135,9 +135,10 @@ export function VenueGallery() {
             </Reveal>
           ))}
         </ul>
+        {limit && <Link className="link page-more" to="gallery">{t.gallery.more}</Link>}
       </div>
 
-      {open !== null && <Lightbox index={open} onIndex={setOpen} onClose={close} />}
+      {open !== null && <Lightbox images={images} index={open} onIndex={setOpen} onClose={close} />}
     </section>
   );
 }

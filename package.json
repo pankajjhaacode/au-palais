@@ -1,12 +1,11 @@
 {
-  "name": "the-art-of-forever",
+  "name": "crystal-gold",
   "private": true,
   "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:demo": "vite build --mode demo",
     "preview": "vite preview",
     "test": "node --test src/"
   },

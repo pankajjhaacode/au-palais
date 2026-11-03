@@ -1,46 +1,45 @@
-# The Art of Forever — wedding venue homepage demo
+# Crystal Gold — wedding venue website
 
-Client-side React app (Vite, Framer Motion, Lucide). "The Art of Forever" is a working concept name, not the venue's confirmed name.
+Client-side React site (Vite, Framer Motion, Lucide) in English and French.
 
 ## Run
 
 ```bash
 pnpm install
-pnpm dev            # http://localhost:5173  (EN)  ·  /fr/  (FR) — theme studio ON
-pnpm test           # theme validation, contrast and enquiry validation checks
+pnpm dev
+pnpm test
+pnpm build
 ```
 
-## Theme studio (demo mode)
+## Pages
 
-Click the **Customize** button (bottom-right) or the palette icon in the navigation.
-It has 6 palettes, a custom colour editor with contrast warnings, 4 typography pairings, hero layouts (immersive / split / typography-led / experimental scroll), corner radius, image treatment, motion, header and spacing. It can also reset, randomize, save named presets, export and import JSON, and copy a share link (`#theme=…`).
-"Preview customer site" hides the demo controls; the small pill at bottom-left brings them back.
+`/`, `/venue`, `/spaces`, `/your-day`, `/gallery`, `/faq`, `/contact`, `/legal`, `/privacy`, `/terms`, `/cookies`, `/accessibility`, each also under `/fr`. Routes live in `src/app/routes.js` and page composition in `src/pages/Pages.jsx`.
 
-Demo mode is on in `pnpm dev` and in `pnpm build:demo`. A normal `pnpm build` is the customer-facing site, with no studio and no unverified content.
+## SEO
 
-## Build & deploy
+The app runs entirely in the browser. At build time, `vite.config.js` also writes an HTML file for each page and language with its own title, description, canonical, hreflang, Open Graph tags and structured data, plus `sitemap.xml`, `robots.txt` and `404.html`. Page head data lives in `src/app/seo.js`.
 
-```bash
-pnpm build          # public site  → dist/
-pnpm build:demo     # client presentation build (studio enabled) → dist/
-pnpm preview
-```
+Set `SITE_URL` in Vercel to the final domain. Without it, the build uses Vercel's production domain.
 
-Deploy `dist/` to any static host (Netlify, Vercel, Cloudflare Pages, S3). Configure an SPA fallback so `/fr/` serves `index.html`.
+## Before launch
 
-## Where things live
+Set in `src/config/venue.config.js` unless noted:
 
-| What | File |
-|---|---|
-| Venue identity & **verified** facts (null = hidden) | `src/config/venue.config.js` |
-| Images, alt text, focal points | `src/config/assets.config.js` |
-| Theme presets, typography, production theme | `src/config/themes.config.js` (`productionThemeId`) |
-| All EN / FR copy | `src/content/homepage.content.js` |
-| Enquiry submission | `src/services/enquiry.js` |
+- **Enquiries:** set `VITE_ENQUIRY_ENDPOINT` in the Vercel project to a URL that accepts a JSON POST. Without it the form shows an error and no enquiry is sent.
+- **Legal notice:** `legal` and `identity` hold the company name, form, SIRET, address and publication director. Missing values show as "To be completed" on `/legal`.
+- **Legal pages:** `/legal`, `/privacy`, `/terms`, `/cookies` and `/accessibility` were drafted without legal advice.
+- **Contact:** `contact.email` and `contact.phone` appear in the footer, on `/contact` and on the legal pages.
+- **Facts:** `facts` holds capacity, services and similar. A value appears only once it is set.
+- **Legal review:** have those pages checked, including the retention wording.
 
-## Before going live
+## Design
 
-- **Photography:** images in `public/images/venue/` are cropped from the client's supplied boards (some are design visualisations, max ~1300px wide). Swap in high-resolution photography via `assets.config.js` when available.
-- **Facts:** fill `venue.config.js` from the owner's information. Experiences and details stay hidden publicly until `verified` / non-null.
-- **Enquiries:** set `VITE_ENQUIRY_ENDPOINT` (API, CRM webhook or form backend). Without it, the public form shows an error instead of silently losing leads; demo mode only simulates submission.
-- **SEO:** this is a client-rendered SPA, so crawlers that don't run JavaScript see only the static `<title>`/description in `index.html`. For local SEO, add pre-rendering (e.g. `vite-plugin-ssg`) or SSR later.
+The look is fixed: colours and type are tokens in `:root` at the top of `src/styles/global.css`, with rounded corners, muted images, a light header and subtle motion. Motion follows the visitor's reduced-motion setting.
+
+## Imagery
+
+`public/images/venue/` holds crops of the client's supplied boards. They are about 1,300px wide and some are design visualisations. Replace them through `src/config/assets.config.js` when originals are available.
+
+## Hosting
+
+`vercel.json` builds the site. Each page is a real file, so no rewrites are needed, and unknown addresses get `404.html` with a true 404 status.

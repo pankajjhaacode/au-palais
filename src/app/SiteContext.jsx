@@ -1,32 +1,46 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { getContent } from '../content/homepage.content.js';
+import { pagePath, parsePath } from './routes.js';
+import { updateHead } from './seo.js';
 
 const SiteContext = createContext(null);
 
-export const localePath = (locale) => (locale === 'en' ? '/' : `/${locale}/`);
-
-export function SiteProvider({ locale, demo, children }) {
-  const [enquiryOpen, setEnquiryOpen] = useState(false);
+export function SiteProvider({ locale, children }) {
+  const [page, setPage] = useState(() => parsePath(window.location.pathname).page);
   const t = getContent(locale);
 
   useEffect(() => {
+    const onPopState = () => setPage(parsePath(window.location.pathname).page);
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  useEffect(() => {
     document.documentElement.lang = locale;
-    document.title = t.meta.title;
-    document.querySelector('meta[name="description"]')?.setAttribute('content', t.meta.description);
-  }, [locale, t]);
+    updateHead(locale, page, import.meta.env.VITE_SITE_URL);
+  }, [locale, page]);
+
+  const navigate = useCallback(
+    (to) => {
+      window.history.pushState(null, '', pagePath(locale, to));
+      setPage(to);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      // <main> remounts per page, so focus it after the commit.
+      requestAnimationFrame(() => document.getElementById('main')?.focus({ preventScroll: true }));
+    },
+    [locale],
+  );
 
   const value = useMemo(
     () => ({
       locale,
       t,
-      // Concept (unverified) content is visible only in demo mode, clearly marked.
-      showUnverified: demo,
-      paths: { en: localePath('en'), fr: localePath('fr') },
-      enquiryOpen,
-      openEnquiry: () => setEnquiryOpen(true),
-      closeEnquiry: () => setEnquiryOpen(false),
+      page,
+      navigate,
+      // Language links keep the visitor on the same page.
+      paths: { en: pagePath('en', page), fr: pagePath('fr', page) },
     }),
-    [locale, t, demo, enquiryOpen],
+    [locale, t, page, navigate],
   );
 
   return <SiteContext.Provider value={value}>{children}</SiteContext.Provider>;

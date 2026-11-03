@@ -35,7 +35,7 @@ const staircaseWide = img('staircase-wide', {
   },
 });
 const hallWide = img('hall-wide', {
-  width: 1232, height: 446,
+  width: 1232, height: 446, focalMobile: '12% 50%',
   alt: {
     en: 'The full width of the hall: panelled walls, mirrors and the stage at its centre',
     fr: 'Toute la largeur de la salle : boiseries, miroirs et la scène en son centre',
@@ -92,9 +92,12 @@ const tables = img('tables', {
 });
 
 export const assets = {
-  hero: staircase,
+  heroes: { home: staircase, venue: hall, spaces: ballroom, day: hallWide, gallery: staircaseWide, contact: mezzaninePhoto },
   venue: hall,
   closing: mezzaninePhoto,
+  venueDetails: { light: hall, walls: mezzanine, floor: ballroom },
+  venueFigure: staircaseWide,
+  day: { arrive: ballroom, vows: stage, entrance: florals, dinner: tables, dance: mezzaninePhoto },
   spaces: { ceremony: stage, staircase: florals, ballroom, mezzanine, tables },
   gallery: [staircaseWide, chandelier, stage, hallWide, florals, mezzanine, ballroom, mezzaninePhoto],
 };

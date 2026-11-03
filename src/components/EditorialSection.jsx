@@ -3,11 +3,11 @@ import { m, useScroll, useTransform } from 'framer-motion';
 import { assets } from '../config/assets.config.js';
 import { isKnown, venue } from '../config/venue.config.js';
 import { localize, useSite } from '../app/SiteContext.jsx';
-import { useMotionScale } from '../theme/ThemeContext.jsx';
-import { Eyebrow, Img, MaskReveal, Reveal } from './primitives.jsx';
+import { useMotionScale } from '../app/motion.js';
+import { Eyebrow, Img, Link, MaskReveal, Reveal } from './primitives.jsx';
 
-/** Section 2 — the venue as architecture. */
-export function EditorialSection() {
+/** The venue as architecture. `more` adds a link to the full page. */
+export function EditorialSection({ index, image = assets.venue, more = false }) {
   const ref = useRef(null);
   const { t, locale } = useSite();
   const scale = useMotionScale();
@@ -20,7 +20,7 @@ export function EditorialSection() {
   return (
     <section ref={ref} id="venue" className="section venue" aria-labelledby="venue-title">
       <div className="container venue__grid">
-        <Eyebrow index="01">{t.venue.eyebrow}</Eyebrow>
+        <Eyebrow index={index}>{t.venue.eyebrow}</Eyebrow>
 
         <m.h2 id="venue-title" className="display venue__title" style={{ scale: headingScale, x: headingX }}>
           <span>{t.venue.title[0]}</span>
@@ -29,7 +29,7 @@ export function EditorialSection() {
 
         <figure className="venue__figure">
           <MaskReveal className="frame">
-            <Img asset={assets.venue} />
+            <Img asset={image} />
           </MaskReveal>
         </figure>
 
@@ -46,6 +46,7 @@ export function EditorialSection() {
               </ul>
             </Reveal>
           )}
+          {more && <Link className="link page-more" to="venue">{t.venue.more}</Link>}
         </div>
       </div>
     </section>

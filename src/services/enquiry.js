@@ -1,9 +1,6 @@
 /**
- * Enquiry submission boundary.
- *
- * - Demo mode: simulated submission, nothing leaves the browser.
- * - Production: POSTs JSON to VITE_ENQUIRY_ENDPOINT (your API / CRM webhook / form backend).
- *   If no endpoint is configured, submission fails loudly instead of silently dropping leads.
+ * Enquiry submission boundary. POSTs JSON to VITE_ENQUIRY_ENDPOINT (API, CRM webhook or form backend).
+ * If no endpoint is configured, submission fails loudly instead of silently dropping leads.
  */
 const ENDPOINT = import.meta.env?.VITE_ENQUIRY_ENDPOINT;
 
@@ -37,7 +34,7 @@ export function validateEnquiry(values, today) {
   return errors;
 }
 
-export async function submitEnquiry(values, { demo, locale }) {
+export async function submitEnquiry(values, { locale }) {
   const payload = {
     ...values,
     names: values.names.trim(),
@@ -48,11 +45,6 @@ export async function submitEnquiry(values, { demo, locale }) {
     submittedAt: new Date().toISOString(),
   };
 
-  if (demo) {
-    await new Promise((resolve) => setTimeout(resolve, 1100));
-    return { ok: true, simulated: true };
-  }
-
   if (!ENDPOINT) throw new Error('Enquiry endpoint not configured (set VITE_ENQUIRY_ENDPOINT).');
 
   const res = await fetch(ENDPOINT, {
@@ -61,5 +53,5 @@ export async function submitEnquiry(values, { demo, locale }) {
     body: JSON.stringify(payload),
   });
   if (!res.ok) throw new Error(`Enquiry failed with status ${res.status}`);
-  return { ok: true, simulated: false };
+  return { ok: true };
 }

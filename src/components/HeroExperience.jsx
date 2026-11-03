@@ -1,41 +1,47 @@
 import { useRef } from 'react';
 import { m, useScroll, useTransform } from 'framer-motion';
 import { ArrowDownRight } from 'lucide-react';
-import { assets } from '../config/assets.config.js';
+import { useMotionScale } from '../app/motion.js';
 import { useSite } from '../app/SiteContext.jsx';
-import { useMotionScale, useTheme } from '../theme/ThemeContext.jsx';
-import { Img } from './primitives.jsx';
+import { Img, Link } from './primitives.jsx';
 
-function Headline({ window: imageWindow, lineStyles = [], blend = false }) {
-  const { t } = useSite();
+/** `decorative` renders a hidden visual copy for the layered effect; the <h1> stays the only heading. */
+function Headline({ hero, lineStyles = [], decorative = false }) {
+  const Tag = decorative ? 'div' : 'h1';
   return (
-    <h1 id="hero-title" className={`display hero-title${blend ? ' blend-ink' : ''}`}>
-      {t.hero.lines.map((line, i) => (
+    <Tag {...(decorative ? { 'aria-hidden': true } : { id: 'hero-title' })} className="display hero-title">
+      {hero.lines.map((line, i) => (
         <m.span key={line} className={`hero-title__line hero-title__line--${i}`} style={{ '--i': i, ...lineStyles[i] }}>
           <span className="hero-title__mask">
             <span className="hero-title__text">{line}</span>
           </span>
-          {i === 0 && imageWindow}
         </m.span>
       ))}
       <m.span className="hero-title__coda" style={{ '--i': 2, ...lineStyles[2] }}>
         <span className="hero-title__mask">
-          <span className="hero-title__text">{t.hero.coda}</span>
+          <span className="hero-title__text">{hero.coda}</span>
         </span>
       </m.span>
-    </h1>
+    </Tag>
   );
 }
 
-function HeroActions({ onImage = false }) {
+function HeroActions({ hero, ctaTo }) {
   const { t } = useSite();
+  const label = (
+    <>
+      {hero.cta}
+      <ArrowDownRight size={16} strokeWidth={1.5} aria-hidden="true" />
+    </>
+  );
   return (
     <div className="hero__foot">
-      <a className={`btn ${onImage ? 'btn--on-image' : 'btn--primary'}`} href="#venue">
-        {t.hero.cta}
-        <ArrowDownRight size={16} strokeWidth={1.5} aria-hidden="true" />
-      </a>
-      <a className="scroll-cue" href="#venue" aria-label={t.a11y.scroll}>
+      {ctaTo ? (
+        <Link className="btn btn--on-image" to={ctaTo}>{label}</Link>
+      ) : (
+        <a className="btn btn--on-image" href="#content">{label}</a>
+      )}
+      <a className="scroll-cue" href="#content" aria-label={t.a11y.scroll}>
         <span className="scroll-cue__track" aria-hidden="true">
           <span className="scroll-cue__dot" />
         </span>
@@ -44,95 +50,18 @@ function HeroActions({ onImage = false }) {
   );
 }
 
-function Meta() {
-  const { t } = useSite();
-  return (
-    <ul className="hero__meta">
-      {t.hero.meta.map((item) => (
-        <li key={item}>{item}</li>
-      ))}
-    </ul>
-  );
-}
-
-/** Full-bleed photograph with slow scroll parallax. */
-function ParallaxImage({ targetRef, className = '' }) {
-  const scale = useMotionScale();
-  const { scrollYProgress } = useScroll({ target: targetRef, offset: ['start start', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', `${16 * scale}%`]);
-  return (
-    <div className={`hero-media ${className}`}>
-      <m.div className="hero-media__inner" style={{ y }}>
-        <Img asset={assets.hero} priority />
-      </m.div>
-    </div>
-  );
-}
-
-function ImmersiveHero() {
+/** The photograph opens from a framed window to full bleed as the visitor scrolls. */
+export function HeroExperience({ content: hero, image, ctaTo }) {
   const ref = useRef(null);
-  const { t } = useSite();
-  return (
-    <section ref={ref} className="hero hero--immersive on-image" aria-labelledby="hero-title">
-      <ParallaxImage targetRef={ref} />
-      <div className="hero__scrim" aria-hidden="true" />
-      <div className="hero__frame">
-        <p className="hero__caption">{t.hero.caption}</p>
-        <Meta />
-        <Headline />
-        <HeroActions onImage />
-      </div>
-    </section>
-  );
-}
-
-function SplitHero() {
-  const ref = useRef(null);
-  const { t } = useSite();
-  return (
-    <section ref={ref} className="hero hero--split" aria-labelledby="hero-title">
-      <ParallaxImage targetRef={ref} className="hero-split__media" />
-      <p className="vertical-label" aria-hidden="true">{t.hero.vertical}</p>
-      <div className="hero__frame">
-        <p className="hero__caption">{t.hero.caption}</p>
-        <Headline blend />
-        <HeroActions />
-      </div>
-    </section>
-  );
-}
-
-function TypographyHero() {
-  const { t } = useSite();
-  const imageWindow = (
-    <span className="hero-window" aria-hidden="true">
-      <Img asset={assets.hero} priority />
-    </span>
-  );
-  return (
-    <section className="hero hero--type" aria-labelledby="hero-title">
-      <div className="hero__frame">
-        <Meta />
-        <Headline window={imageWindow} />
-        <p className="hero__caption">{t.hero.caption}</p>
-        <HeroActions />
-      </div>
-    </section>
-  );
-}
-
-/** Alternate layout: the photograph opens from a framed window to full bleed as the visitor scrolls. */
-function ExperimentalHero() {
-  const ref = useRef(null);
-  const { t } = useSite();
   const scale = useMotionScale();
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start start', 'end end'] });
 
-  const clipPath = useTransform(p, [0, 0.6], ['inset(16% 26% 16% 26%)', 'inset(0% 0% 0% 0%)']);
-  const imageScale = useTransform(p, [0, 1], [1.18, 1]);
-  const scrim = useTransform(p, [0.3, 0.9], [0, 0.55]);
-  const leftX = useTransform(p, [0, 0.7], ['0vw', '-14vw']);
-  const rightX = useTransform(p, [0, 0.7], ['0vw', '14vw']);
+  const clipPath = useTransform(p, [0, 0.6], ['inset(16% 26% 16% 26% round 28px)', 'inset(0% 0% 0% 0% round 0px)']);
+  const imageScale = useTransform(p, [0, 1], [1 + 0.18 * scale, 1]);
+  const scrim = useTransform(p, [0, 0.9], [0.3, 0.6]);
+  const labelOpacity = useTransform(p, [0.2, 0.4], [1, 0]);
+  const leftX = useTransform(p, [0, 0.7], ['0vw', `${-14 * scale}vw`]);
+  const rightX = useTransform(p, [0, 0.7], ['0vw', `${14 * scale}vw`]);
   const codaOpacity = useTransform(p, [0.45, 0.75], [0, 1]);
   const footOpacity = useTransform(p, [0.55, 0.85], [0, 1]);
 
@@ -140,44 +69,36 @@ function ExperimentalHero() {
   const lineStyles = animated ? [{ x: leftX }, { x: rightX }, { opacity: codaOpacity }] : [];
 
   return (
-    <section ref={ref} className={`hero hero--exp${animated ? ' is-animated' : ''}`} aria-labelledby="hero-title">
-      <div className="hero-exp__sticky">
-        <m.div className="hero-exp__media" style={animated ? { clipPath } : undefined}>
-          <m.div className="hero-media__inner" style={animated ? { scale: imageScale } : undefined}>
-            <Img asset={assets.hero} priority />
-          </m.div>
-          <m.div className="hero__scrim" style={animated ? { opacity: scrim } : { opacity: 0.55 }} aria-hidden="true" />
-        </m.div>
-
-        <p className="hero-exp__corner hero-exp__corner--tl">{t.hero.meta[2]}</p>
-        <p className="hero-exp__corner hero-exp__corner--tr">{t.hero.meta[0]}</p>
-        <p className="hero-exp__corner hero-exp__corner--bl">{t.hero.meta[1]}</p>
-        <p className="vertical-label" aria-hidden="true">{t.hero.vertical}</p>
-
-        <Headline blend lineStyles={lineStyles} />
-
-        <m.div className="hero-exp__foot on-image" style={animated ? { opacity: footOpacity } : undefined}>
-          <p className="hero__caption">{t.hero.caption}</p>
-          <HeroActions onImage />
-        </m.div>
-      </div>
-    </section>
-  );
-}
-
-const LAYOUTS = {
-  immersive: ImmersiveHero,
-  split: SplitHero,
-  typography: TypographyHero,
-  experimental: ExperimentalHero,
-};
-
-export function HeroExperience() {
-  const { theme } = useTheme();
-  const Layout = LAYOUTS[theme.layout.hero] ?? ImmersiveHero;
-  return (
     <div id="top" className="hero-shell">
-      <Layout key={theme.layout.hero} />
+      <section ref={ref} className={`hero hero--exp${animated ? ' is-animated' : ''}`} aria-labelledby="hero-title">
+        <div className="hero-exp__sticky">
+          <Headline hero={hero} lineStyles={lineStyles} />
+
+          <m.div className="hero-exp__media" style={animated ? { clipPath } : undefined}>
+            <m.div className="hero-media__inner" style={animated ? { scale: imageScale } : undefined}>
+              <Img asset={image} priority />
+            </m.div>
+            <m.div className="hero__scrim" style={animated ? { opacity: scrim } : { opacity: 0.6 }} aria-hidden="true" />
+            {/* Same headline in white, clipped with the photo: ink outside the window, white inside it. */}
+            <Headline hero={hero} lineStyles={lineStyles} decorative />
+          </m.div>
+
+          {/* These sit on the bare page, so they fade out before the photo reaches them. */}
+          {animated && (
+            <m.div className="hero-exp__labels" style={{ opacity: labelOpacity }}>
+              <p className="hero-exp__corner hero-exp__corner--tl">{hero.meta[2]}</p>
+              <p className="hero-exp__corner hero-exp__corner--tr">{hero.meta[0]}</p>
+              <p className="hero-exp__corner hero-exp__corner--bl">{hero.meta[1]}</p>
+              <p className="vertical-label" aria-hidden="true">{hero.vertical}</p>
+            </m.div>
+          )}
+
+          <m.div className="hero-exp__foot on-image" style={animated ? { opacity: footOpacity } : undefined}>
+            <p className="hero__caption">{hero.caption}</p>
+            <HeroActions hero={hero} ctaTo={ctaTo} />
+          </m.div>
+        </div>
+      </section>
     </div>
   );
 }
