@@ -187,7 +187,6 @@ export const PAGES = {
   gallery: GalleryPage,
   contact: ContactPage,
   faq: FaqPage,
-  legal: () => <TextPage name="legalPage" />,
   privacy: () => <TextPage name="privacyPage" />,
   terms: () => <TextPage name="termsPage" />,
   cookies: () => <TextPage name="cookiesPage" />,

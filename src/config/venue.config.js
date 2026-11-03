@@ -7,39 +7,31 @@
  */
 export const venue = {
   brand: {
-    // Client-approved site name. Legal identity lives in `legal` below.
+    // Client-approved site name.
     wordmark: 'Crystal Gold',
   },
 
   site: {
     defaultLocale: 'en',
     locales: ['en', 'fr'],
-    // Google Maps reference supplied by the client; could not be resolved automatically.
-    mapsReference: 'https://maps.app.goo.gl/2WEXAyZutxWTiTba6',
+    mapsReference: 'https://www.google.com/maps/search/?api=1&query=5%20Rte%20de%20Paris%20%C3%80%20Dieppe%2C%2095520%20Osny',
   },
 
   // Official identity — fill from the venue owner's documents.
   identity: {
     officialName: null,
-    streetAddress: null,
-    postalCode: null,
-    city: 'Paris',
+    streetAddress: '5 Rte de Paris À Dieppe',
+    postalCode: '95520',
+    city: 'Osny',
     country: 'FR',
     geo: null, // { lat: 48.8, lng: 2.3 }
   },
 
   contact: {
     email: null,
-    phone: null,
+    phone: '06 47 50 54 06',
+    phoneE164: '+33647505406',
     instagram: null,
-  },
-
-  // Required by French law on /legal. Null values render as "to be completed".
-  legal: {
-    companyName: null,
-    legalForm: null,
-    siret: null,
-    publicationDirector: null,
   },
 
   // Each fact: value is null until verified. Values may be localised { en, fr }.

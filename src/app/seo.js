@@ -22,7 +22,7 @@ function venueSchema(url, siteUrl, description) {
     name: brand.wordmark,
     url,
     description,
-    logo: `${siteUrl}/icon-512.png`,
+    logo: `${siteUrl}/logo.png`,
     image: `${siteUrl}/og-image.jpg`,
     address: {
       '@type': 'PostalAddress',
@@ -32,7 +32,7 @@ function venueSchema(url, siteUrl, description) {
       ...(identity.postalCode && { postalCode: identity.postalCode }),
     },
     ...(contact.email && { email: contact.email }),
-    ...(contact.phone && { telephone: contact.phone }),
+    ...(contact.phone && { telephone: contact.phoneE164 }),
     ...(contact.instagram && { sameAs: [contact.instagram] }),
   };
 }

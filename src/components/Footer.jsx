@@ -12,7 +12,7 @@ export function Footer() {
     <footer className="footer">
       <div className="container footer__grid">
         <div className="footer__brand">
-          <Logo />
+          <Logo stacked />
           <p className="footer__tagline lead">{t.footer.tagline}</p>
         </div>
 
@@ -32,7 +32,6 @@ export function Footer() {
         <nav aria-label={t.footer.legalHeading}>
           <p className="micro footer__heading">{t.footer.legalHeading}</p>
           <ul className="footer__list">
-            <li><Link className="link" to="legal">{t.footer.legal}</Link></li>
             <li><Link className="link" to="privacy">{t.footer.privacy}</Link></li>
             <li><Link className="link" to="terms">{t.footer.terms}</Link></li>
             <li><Link className="link" to="cookies">{t.footer.cookies}</Link></li>
@@ -47,7 +46,7 @@ export function Footer() {
               <span key={line}>{line}</span>
             ))}
             {contact.email && <a className="link" href={`mailto:${contact.email}`}>{contact.email}</a>}
-            {contact.phone && <a className="link" href={`tel:${contact.phone.replace(/\s/g, '')}`}>{contact.phone}</a>}
+            {contact.phone && <a className="link" href={`tel:${contact.phoneE164}`}>{contact.phone}</a>}
             {contact.instagram && (
               <a className="link" href={contact.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
             )}

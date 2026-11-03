@@ -22,7 +22,7 @@ export function DetailsSection() {
 
   const contactRows = [
     contact.email && { label: contact.email, href: `mailto:${contact.email}` },
-    contact.phone && { label: contact.phone, href: `tel:${contact.phone.replace(/\s/g, '')}` },
+    contact.phone && { label: contact.phone, href: `tel:${contact.phoneE164}` },
   ].filter(Boolean);
 
   return (
@@ -64,7 +64,7 @@ export function DetailsSection() {
               ))}
               <li>
                 <a className="link" href={site.mapsReference} target="_blank" rel="noopener noreferrer">
-                  {venue.identity.city} — Google Maps
+                  {venue.identity.streetAddress}, {venue.identity.postalCode} {venue.identity.city}
                   <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden="true" />
                 </a>
               </li>

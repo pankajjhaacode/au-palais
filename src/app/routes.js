@@ -7,7 +7,6 @@ const PATHS = {
   gallery: '/gallery',
   faq: '/faq',
   contact: '/contact',
-  legal: '/legal',
   privacy: '/privacy',
   terms: '/terms',
   cookies: '/cookies',

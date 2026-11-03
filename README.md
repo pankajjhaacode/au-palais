@@ -13,7 +13,7 @@ pnpm build
 
 ## Pages
 
-`/`, `/venue`, `/spaces`, `/your-day`, `/gallery`, `/faq`, `/contact`, `/legal`, `/privacy`, `/terms`, `/cookies`, `/accessibility`, each also under `/fr`. Routes live in `src/app/routes.js` and page composition in `src/pages/Pages.jsx`.
+`/`, `/venue`, `/spaces`, `/your-day`, `/gallery`, `/faq`, `/contact`, `/privacy`, `/terms`, `/cookies`, `/accessibility`, each also under `/fr`. Routes live in `src/app/routes.js` and page composition in `src/pages/Pages.jsx`.
 
 ## SEO
 
@@ -26,15 +26,18 @@ Set `SITE_URL` in Vercel to the final domain. Without it, the build uses Vercel'
 Set in `src/config/venue.config.js` unless noted:
 
 - **Enquiries:** set `VITE_ENQUIRY_ENDPOINT` in the Vercel project to a URL that accepts a JSON POST. Without it the form shows an error and no enquiry is sent.
-- **Legal notice:** `legal` and `identity` hold the company name, form, SIRET, address and publication director. Missing values show as "To be completed" on `/legal`.
-- **Legal pages:** `/legal`, `/privacy`, `/terms`, `/cookies` and `/accessibility` were drafted without legal advice.
-- **Contact:** `contact.email` and `contact.phone` appear in the footer, on `/contact` and on the legal pages.
+- **Legal pages:** `/privacy`, `/terms`, `/cookies` and `/accessibility` were drafted without legal advice.
+- **Contact:** the address and `contact.phone` are set; `contact.email` appears in the footer and on `/contact` once added.
 - **Facts:** `facts` holds capacity, services and similar. A value appears only once it is set.
 - **Legal review:** have those pages checked, including the retention wording.
 
 ## Design
 
 The look is fixed: colours and type are tokens in `:root` at the top of `src/styles/global.css`, with rounded corners, muted images, a light header and subtle motion. Motion follows the visitor's reduced-motion setting.
+
+## Logo
+
+`public/logo.png` is the client's source file. The other logo files, favicon, app icons and `og-image.jpg` are generated from it: `logo-emblem.png` in the header, `logo-stacked.png` in the footer, and `logo-transparent.png` and `logo-light.png` for general use.
 
 ## Imagery
 

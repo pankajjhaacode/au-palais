@@ -26,26 +26,14 @@ export function Link({ to, onClick, children, ...rest }) {
   );
 }
 
-/** The Crystal Gold mark: a faceted gem in gold tones. Decorative beside the wordmark. */
-function LogoMark({ className = '' }) {
-  return (
-    <svg className={`logo-mark ${className}`} viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-      <path fill="#b8964f" d="M1 12 7 5l3 7z" />
-      <path fill="#e3cb8a" d="M7 5h9l-6 7z" />
-      <path fill="#f0dfae" d="m16 5 6 7H10z" />
-      <path fill="#d4b46c" d="M16 5h9l-3 7z" />
-      <path fill="#a8843f" d="m25 5 6 7h-9z" />
-      <path fill="#9a7838" d="M1 12h9l6 17z" />
-      <path fill="#c9a75c" d="M10 12h12l-6 17z" />
-      <path fill="#7f622c" d="M22 12h9L16 29z" />
-    </svg>
-  );
-}
-
-export function Logo() {
+/** The Crystal Gold logo: chandelier beside the wordmark, or the full stacked logo for larger spaces. */
+export function Logo({ stacked = false }) {
+  if (stacked) {
+    return <img className="logo-stacked" src="/logo-stacked.png" width="560" height="346" alt={venue.brand.wordmark} />;
+  }
   return (
     <span className="logo">
-      <LogoMark />
+      <img className="logo-emblem" src="/logo-emblem.png" width="165" height="192" alt="" />
       <span className="logo__word">{venue.brand.wordmark}</span>
     </span>
   );

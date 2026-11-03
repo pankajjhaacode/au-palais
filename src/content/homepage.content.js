@@ -6,21 +6,20 @@ import { venue } from '../config/venue.config.js';
  * French uses typographic apostrophes and narrow non-breaking spaces (\u202F) before : ? !
  */
 const nbsp = ' ';
-const { legal, contact, identity } = venue;
+const { contact, identity } = venue;
 const show = (value, missing) => value || missing;
-const address = [identity.streetAddress, identity.postalCode, identity.streetAddress && identity.city].filter(Boolean).join(' ');
+const address = `${identity.streetAddress}, ${identity.postalCode} ${identity.city}`;
 const contactLine = [contact.email, contact.phone].filter(Boolean).join(' · ');
 
 export const content = {
   en: {
     pages: {
-      home: { title: 'Crystal Gold — Wedding Venue in Paris', description: 'A Paris wedding hall of crystal chandeliers, a sweeping grand staircase and a mezzanine above the dance floor.' },
+      home: { title: 'Crystal Gold — Wedding Venue near Paris', description: 'A wedding hall in Osny, near Paris, with crystal chandeliers, a sweeping grand staircase and a mezzanine above the dance floor.' },
       venue: { title: 'The Venue — Crystal Gold', description: 'Inside the hall: a curved grand staircase, a mezzanine gallery, crystal chandeliers and skylights.' },
       spaces: { title: 'The Spaces — Crystal Gold', description: 'The ceremony hall, the grand staircase, the ballroom and the mezzanine, room by room.' },
       day: { title: 'Your Day — Crystal Gold', description: 'One way a wedding day could unfold in the hall, from the first arrival to the last dance.' },
       gallery: { title: 'Gallery — Crystal Gold', description: 'See the hall from every angle: the staircase, the chandeliers, the stage and the mezzanine.' },
       contact: { title: 'Contact — Crystal Gold', description: 'Tell us about the day you imagine. Enquire about your wedding in the hall.' },
-      legal: { title: 'Legal Notice — Crystal Gold', description: 'Publisher and hosting information for the Crystal Gold website.' },
       privacy: { title: 'Privacy Policy — Crystal Gold', description: 'What personal data the Crystal Gold website collects, why, for how long, and your rights.' },
       faq: { title: 'FAQ — Crystal Gold', description: 'Answers to common questions about dates, guest numbers, visiting the hall and enquiring about your wedding.' },
       terms: { title: 'Terms of Use — Crystal Gold', description: 'The terms that apply when you use the Crystal Gold website.' },
@@ -34,7 +33,7 @@ export const content = {
         coda: 'Built to be seen.',
         caption: 'Light, line, proportion',
         cta: 'Step inside',
-        meta: ['Paris, France', 'The venue', 'Nº 02'],
+        meta: ['Osny, France', 'The venue', 'Nº 02'],
         vertical: 'Crystal Gold',
       },
       details: {
@@ -54,7 +53,7 @@ export const content = {
         coda: 'One hall.',
         caption: 'Stage, staircase, floor, gallery',
         cta: 'See the spaces',
-        meta: ['Paris, France', 'The spaces', 'Nº 03'],
+        meta: ['Osny, France', 'The spaces', 'Nº 03'],
         vertical: 'Crystal Gold',
       },
     },
@@ -64,7 +63,7 @@ export const content = {
         coda: 'First step to last dance.',
         caption: 'One way it could unfold',
         cta: 'Walk through it',
-        meta: ['Paris, France', 'Your day', 'Nº 04'],
+        meta: ['Osny, France', 'Your day', 'Nº 04'],
         vertical: 'Crystal Gold',
       },
       steps: {
@@ -87,7 +86,7 @@ export const content = {
         coda: 'The hall in images.',
         caption: 'Select any image to view it full screen',
         cta: 'Open the gallery',
-        meta: ['Paris, France', 'Gallery', 'Nº 05'],
+        meta: ['Osny, France', 'Gallery', 'Nº 05'],
         vertical: 'Crystal Gold',
       },
     },
@@ -97,29 +96,11 @@ export const content = {
         coda: 'The day you imagine.',
         caption: 'We reply personally',
         cta: 'Begin your enquiry',
-        meta: ['Paris, France', 'Contact', 'Nº 06'],
+        meta: ['Osny, France', 'Contact', 'Nº 06'],
         vertical: 'Crystal Gold',
       },
       faqTitle: 'Before you write',
       faqMore: 'All questions',
-    },
-    legalPage: {
-      heading: 'Legal notice',
-      sections: [
-        {
-          h: 'Publisher',
-          p: [
-            `Company: ${show(legal.companyName, 'To be completed')}`,
-            `Legal form: ${show(legal.legalForm, 'To be completed')}`,
-            `SIRET: ${show(legal.siret, 'To be completed')}`,
-            `Registered address: ${show(address, 'To be completed')}`,
-            `Publication director: ${show(legal.publicationDirector, 'To be completed')}`,
-            `Contact: ${show(contactLine, 'To be completed')}`,
-          ],
-        },
-        { h: 'Hosting', p: ['Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, United States.'] },
-        { h: 'Intellectual property', p: ['The text and images on this site may not be reproduced without permission. Some images are design visualisations of the venue.'] },
-      ],
     },
     privacyPage: {
       heading: 'Privacy policy',
@@ -129,7 +110,7 @@ export const content = {
         { h: 'How long', p: ['We keep your enquiry for as long as needed to respond and, if you go ahead, to prepare your celebration. It is then deleted, unless the law requires us to keep it.'] },
         { h: 'Who receives it', p: ['The venue team and the service providers that host this site and deliver enquiries. Your data is not sold.'] },
         { h: 'Cookies and fonts', p: ['This site sets no advertising or analytics cookies. Its fonts load from Google Fonts, which receives your IP address when you visit.'] },
-        { h: 'Your rights', p: [`You can ask to access, correct or delete your data, or object to its use, by writing to: ${show(contactLine, 'contact address to be completed')}. You may also complain to the CNIL (cnil.fr).`] },
+        { h: 'Your rights', p: [`You can ask to access, correct or delete your data, or object to its use, by writing to ${address} or calling ${contact.phone}. You may also complain to the CNIL (cnil.fr).`] },
       ],
     },
     faqPage: {
@@ -142,7 +123,7 @@ export const content = {
         { q: 'Can we see the hall?', a: 'Mention it in your message and we will talk through what’s possible.' },
         { q: 'What does a wedding here cost?', a: 'It depends on your date, guest numbers and plans, so we answer each enquiry individually.' },
         { q: 'What kinds of celebration can we ask about?', a: 'Ceremony and reception, reception only, a wedding dinner, an intimate celebration, or something else. Choose the closest option on the form.' },
-        { q: 'Where is the venue?', a: 'In Paris. You will find a map link on the contact page.' },
+        { q: 'Where is the venue?', a: `At ${address}, near Paris. You will find a map link on the contact page.` },
         { q: 'Are the images photographs?', a: 'Some are design visualisations of the venue, so the finish and styling you see may differ.' },
         { q: 'How will you reply?', a: 'Personally, by email, to the address you give on the form.' },
       ],
@@ -174,7 +155,7 @@ export const content = {
         { h: 'Our aim', p: ['We want every couple and guest to be able to use this site, whatever their abilities or equipment.'] },
         { h: 'What we have done', p: ['The site can be used with a keyboard and has a link to skip to the content. Images have text descriptions, form errors are announced and explained, and animations stop if your device is set to reduce motion.'] },
         { h: 'Current status', p: ['This site has not been formally audited against the RGAA or WCAG standards, so we make no claim of conformity.'] },
-        { h: 'Report a problem', p: [`If something stops you using the site, tell us at: ${show(contactLine, 'the enquiry form on our contact page')}.`] },
+        { h: 'Report a problem', p: [`If something stops you using the site, call us on: ${show(contactLine, 'the enquiry form on our contact page')}.`] },
       ],
     },
     notFoundPage: {
@@ -206,7 +187,7 @@ export const content = {
       coda: 'A hall made for forever.',
       caption: 'Staircase, mezzanine, chandeliers',
       cta: 'Discover the Venue',
-      meta: ['Paris, France', 'Wedding venue', 'Nº 01'],
+      meta: ['Osny, France', 'Wedding venue', 'Nº 01'],
       vertical: 'Crystal Gold',
     },
     venue: {
@@ -313,7 +294,6 @@ export const content = {
       legalHeading: 'Legal',
       faq: 'FAQ',
       contact: 'Contact',
-      legal: 'Legal notice',
       privacy: 'Privacy policy',
       terms: 'Terms of use',
       cookies: 'Cookie policy',
@@ -324,13 +304,12 @@ export const content = {
 
   fr: {
     pages: {
-      home: { title: 'Crystal Gold — Lieu de mariage à Paris', description: 'Une salle de mariage à Paris : lustres de cristal, grand escalier et mezzanine au-dessus de la piste.' },
+      home: { title: 'Crystal Gold — Lieu de mariage près de Paris', description: 'Une salle de mariage à Osny, près de Paris : lustres de cristal, grand escalier et mezzanine au-dessus de la piste.' },
       venue: { title: 'Le Lieu — Crystal Gold', description: 'À l’intérieur de la salle : un grand escalier courbe, une mezzanine en galerie, des lustres de cristal et des puits de lumière.' },
       spaces: { title: 'Les Espaces — Crystal Gold', description: 'La salle de cérémonie, le grand escalier, la salle de bal et la mezzanine, pièce par pièce.' },
       day: { title: 'Votre Jour — Crystal Gold', description: 'Une façon dont votre mariage pourrait se dérouler dans la salle, de la première arrivée à la dernière danse.' },
       gallery: { title: 'Galerie — Crystal Gold', description: 'La salle sous tous ses angles : l’escalier, les lustres, la scène et la mezzanine.' },
       contact: { title: 'Contact — Crystal Gold', description: 'Parlez-nous du jour que vous imaginez. Renseignez-vous pour votre mariage dans la salle.' },
-      legal: { title: 'Mentions légales — Crystal Gold', description: 'Informations sur l’éditeur et l’hébergeur du site Crystal Gold.' },
       privacy: { title: 'Politique de confidentialité — Crystal Gold', description: 'Quelles données personnelles le site Crystal Gold collecte, pourquoi, pour combien de temps, et vos droits.' },
       faq: { title: 'FAQ — Crystal Gold', description: 'Réponses aux questions fréquentes sur les dates, le nombre d’invités, la visite de la salle et votre demande.' },
       terms: { title: 'Conditions d’utilisation — Crystal Gold', description: 'Les conditions qui s’appliquent lorsque vous utilisez le site Crystal Gold.' },
@@ -344,7 +323,7 @@ export const content = {
         coda: 'Faite pour être vue.',
         caption: 'Lumière, ligne, proportions',
         cta: 'Entrer',
-        meta: ['Paris, France', 'Le lieu', 'Nº 02'],
+        meta: ['Osny, France', 'Le lieu', 'Nº 02'],
         vertical: 'Crystal Gold',
       },
       details: {
@@ -364,7 +343,7 @@ export const content = {
         coda: 'Une seule salle.',
         caption: 'Scène, escalier, piste, galerie',
         cta: 'Voir les espaces',
-        meta: ['Paris, France', 'Les espaces', 'Nº 03'],
+        meta: ['Osny, France', 'Les espaces', 'Nº 03'],
         vertical: 'Crystal Gold',
       },
     },
@@ -374,7 +353,7 @@ export const content = {
         coda: 'Du premier pas à la dernière danse.',
         caption: 'Une façon de le vivre',
         cta: 'Le parcourir',
-        meta: ['Paris, France', 'Votre jour', 'Nº 04'],
+        meta: ['Osny, France', 'Votre jour', 'Nº 04'],
         vertical: 'Crystal Gold',
       },
       steps: {
@@ -397,7 +376,7 @@ export const content = {
         coda: 'La salle en images.',
         caption: 'Sélectionnez une image pour l’afficher en plein écran',
         cta: 'Ouvrir la galerie',
-        meta: ['Paris, France', 'Galerie', 'Nº 05'],
+        meta: ['Osny, France', 'Galerie', 'Nº 05'],
         vertical: 'Crystal Gold',
       },
     },
@@ -407,29 +386,11 @@ export const content = {
         coda: 'Du jour que vous imaginez.',
         caption: 'Nous répondons personnellement',
         cta: 'Commencer votre demande',
-        meta: ['Paris, France', 'Contact', 'Nº 06'],
+        meta: ['Osny, France', 'Contact', 'Nº 06'],
         vertical: 'Crystal Gold',
       },
       faqTitle: 'Avant de nous écrire',
       faqMore: 'Toutes les questions',
-    },
-    legalPage: {
-      heading: 'Mentions légales',
-      sections: [
-        {
-          h: 'Éditeur',
-          p: [
-            `Société : ${show(legal.companyName, 'À compléter')}`,
-            `Forme juridique : ${show(legal.legalForm, 'À compléter')}`,
-            `SIRET : ${show(legal.siret, 'À compléter')}`,
-            `Siège social : ${show(address, 'À compléter')}`,
-            `Directeur de la publication : ${show(legal.publicationDirector, 'À compléter')}`,
-            `Contact : ${show(contactLine, 'À compléter')}`,
-          ],
-        },
-        { h: 'Hébergement', p: ['Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis.'] },
-        { h: 'Propriété intellectuelle', p: ['Les textes et images de ce site ne peuvent être reproduits sans autorisation. Certaines images sont des visualisations du projet.'] },
-      ],
     },
     privacyPage: {
       heading: 'Politique de confidentialité',
@@ -439,7 +400,7 @@ export const content = {
         { h: 'Durée', p: ['Nous conservons votre demande le temps nécessaire pour y répondre et, si vous donnez suite, pour préparer votre célébration. Elle est ensuite supprimée, sauf obligation légale de conservation.'] },
         { h: 'Destinataires', p: ['L’équipe du lieu et les prestataires qui hébergent ce site et acheminent les demandes. Vos données ne sont pas vendues.'] },
         { h: 'Cookies et polices', p: ['Ce site ne dépose aucun cookie publicitaire ou de mesure d’audience. Ses polices sont chargées depuis Google Fonts, qui reçoit votre adresse IP lors de votre visite.'] },
-        { h: 'Vos droits', p: [`Vous pouvez demander l’accès, la rectification ou la suppression de vos données, ou vous opposer à leur utilisation, en écrivant à : ${show(contactLine, 'adresse de contact à compléter')}. Vous pouvez aussi saisir la CNIL (cnil.fr).`] },
+        { h: 'Vos droits', p: [`Vous pouvez demander l’accès, la rectification ou la suppression de vos données, ou vous opposer à leur utilisation, en écrivant au ${address} ou en appelant le ${contact.phone}. Vous pouvez aussi saisir la CNIL (cnil.fr).`] },
       ],
     },
     faqPage: {
@@ -452,7 +413,7 @@ export const content = {
         { q: 'Pouvons-nous voir la salle\u202F?', a: 'Dites-le dans votre message et nous verrons ensemble ce qui est possible.' },
         { q: 'Combien coûte un mariage ici\u202F?', a: 'Cela dépend de votre date, du nombre d’invités et de vos envies. Nous répondons donc à chaque demande individuellement.' },
         { q: 'Pour quels types de célébration pouvons-nous vous écrire\u202F?', a: 'Cérémonie et réception, réception seule, dîner de mariage, célébration intime ou autre chose. Choisissez l’option la plus proche dans le formulaire.' },
-        { q: 'Où se trouve le lieu\u202F?', a: 'À Paris. Vous trouverez un lien vers la carte sur la page de contact.' },
+        { q: 'Où se trouve le lieu\u202F?', a: `Au ${address}, près de Paris. Vous trouverez un lien vers la carte sur la page de contact.` },
         { q: 'Les images sont-elles des photographies\u202F?', a: 'Certaines sont des visualisations du projet. Les finitions et la décoration peuvent donc différer.' },
         { q: 'Comment nous répondrez-vous\u202F?', a: 'Personnellement, par e-mail, à l’adresse indiquée dans le formulaire.' },
       ],
@@ -484,7 +445,7 @@ export const content = {
         { h: 'Notre objectif', p: ['Nous voulons que chaque couple et chaque invité puisse utiliser ce site, quels que soient ses capacités ou son équipement.'] },
         { h: 'Ce que nous avons fait', p: ['Le site s’utilise au clavier et propose un lien pour accéder directement au contenu. Les images ont une description textuelle, les erreurs de formulaire sont annoncées et expliquées, et les animations s’arrêtent si votre appareil est réglé pour réduire les mouvements.'] },
         { h: 'État actuel', p: ['Ce site n’a pas fait l’objet d’un audit formel selon le RGAA ou les WCAG\u202F: nous ne revendiquons donc aucune conformité.'] },
-        { h: 'Signaler un problème', p: [`Si quelque chose vous empêche d’utiliser le site, dites-le-nous\u202F: ${show(contactLine, 'via le formulaire de notre page de contact')}.`] },
+        { h: 'Signaler un problème', p: [`Si quelque chose vous empêche d’utiliser le site, appelez-nous au ${show(contactLine, 'via le formulaire de notre page de contact')}.`] },
       ],
     },
     notFoundPage: {
@@ -516,7 +477,7 @@ export const content = {
       coda: 'Une salle pour toujours.',
       caption: 'Escalier, mezzanine, lustres',
       cta: 'Découvrir le lieu',
-      meta: ['Paris, France', 'Lieu de mariage', 'Nº 01'],
+      meta: ['Osny, France', 'Lieu de mariage', 'Nº 01'],
       vertical: 'Crystal Gold',
     },
     venue: {
@@ -623,7 +584,6 @@ export const content = {
       legalHeading: 'Légal',
       faq: 'FAQ',
       contact: 'Contact',
-      legal: 'Mentions légales',
       privacy: 'Politique de confidentialité',
       terms: 'Conditions d’utilisation',
       cookies: 'Politique de cookies',
